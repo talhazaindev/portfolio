@@ -352,9 +352,9 @@ body {
 }
 
 .hero-display {
-  font-size: clamp(2.55rem, 6.4vw, 4.85rem);
-  line-height: 1.04;
-  letter-spacing: -0.038em;
+  font-size: clamp(2.15rem, 4.8vw, 3.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.034em;
   font-weight: 550;
   text-wrap: pretty;
   color: var(--ink-strong);
