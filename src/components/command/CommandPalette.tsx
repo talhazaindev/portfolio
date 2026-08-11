@@ -133,6 +133,13 @@ export function CommandPalette() {
   });
 
   useEffect(() => {
+    function openPalette() {
+      setOpen(true);
+      setQuery("");
+      setActive(0);
+      setSystemStatus(false);
+    }
+
     function onKey(event: KeyboardEvent) {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
@@ -146,8 +153,17 @@ export function CommandPalette() {
         setSystemStatus(false);
       }
     }
+
+    function onOpenEvent() {
+      openPalette();
+    }
+
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("tz:open-command-palette", onOpenEvent);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("tz:open-command-palette", onOpenEvent);
+    };
   }, []);
 
   if (!open) return null;
