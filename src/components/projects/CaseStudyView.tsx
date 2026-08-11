@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/types/content";
@@ -9,6 +10,7 @@ import { ProjectLinks } from "@/components/projects/ProjectLinks";
 import { SystemAnatomy } from "@/components/anatomy/SystemAnatomy";
 import { ArchitectureCanvas } from "@/components/architecture/ArchitectureCanvas";
 import { ProjectVisual } from "@/components/architecture/ProjectVisual";
+import { getProjectCover } from "@/data/projects";
 import { AnalyticsEvents, track } from "@/lib/analytics";
 
 type CaseStudyViewProps = {
@@ -21,6 +23,9 @@ export function CaseStudyView({ project, next }: CaseStudyViewProps) {
   useEffect(() => {
     track(AnalyticsEvents.caseStudyView, { project: project.slug });
   }, [project.slug]);
+
+  const cover = getProjectCover(project);
+  const nextCover = next ? getProjectCover(next) : undefined;
 
   return (
     <article className="pb-24 pt-28 sm:pt-32">
@@ -36,6 +41,26 @@ export function CaseStudyView({ project, next }: CaseStudyViewProps) {
             <ProjectLinks project={project} />
           </div>
         </header>
+
+        {cover ? (
+          <div className="relative mt-12 aspect-[21/9] overflow-hidden rounded-[var(--radius-lg)] border border-border bg-surface/40 sm:aspect-[2.4/1]">
+            <Image
+              src={cover.src}
+              alt={cover.alt}
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 72rem"
+              quality={85}
+              className="object-cover object-top"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
+            {cover.caption ? (
+              <p className="absolute bottom-4 left-4 right-4 text-sm text-foreground/90 sm:left-6">
+                {cover.caption}
+              </p>
+            ) : null}
+          </div>
+        ) : null}
 
         <div className="mt-12 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
           <ProjectVisual project={project} />
@@ -57,6 +82,7 @@ export function CaseStudyView({ project, next }: CaseStudyViewProps) {
             ) : null}
           </section>
         </div>
+
 
         <SectionBlock number="01" title="Overview">
           <p className="text-muted">{project.summary}</p>
@@ -176,10 +202,20 @@ export function CaseStudyView({ project, next }: CaseStudyViewProps) {
           <SectionBlock number="Media" title="Product visuals">
             <div className="grid gap-4 sm:grid-cols-2">
               {project.media.map((item) => (
-                <figure key={item.src} className="overflow-hidden rounded-md border border-border">
-                  {/* Media paths come from typed project content; next/image requires known remote patterns. */}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={item.src} alt={item.alt} className="h-auto w-full" loading="lazy" />
+                <figure
+                  key={item.src}
+                  className="overflow-hidden rounded-md border border-border bg-background/40"
+                >
+                  <div className="relative aspect-[16/10]">
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                      quality={80}
+                      className="object-cover object-top"
+                    />
+                  </div>
                   {item.caption ? (
                     <figcaption className="px-3 py-2 text-xs text-muted">{item.caption}</figcaption>
                   ) : null}
@@ -194,18 +230,32 @@ export function CaseStudyView({ project, next }: CaseStudyViewProps) {
             <p className="mono-label mb-3">Next system</p>
             <Link
               href={`/work/${next.slug}`}
-              className="focus-ring group flex flex-col justify-between gap-4 rounded-[var(--radius-lg)] border border-border bg-surface/40 p-6 sm:flex-row sm:items-end"
+              className="focus-ring group grid overflow-hidden rounded-[var(--radius-lg)] border border-border bg-surface/40 sm:grid-cols-[12rem_1fr]"
             >
-              <div>
-                <h2 className="text-2xl tracking-tight group-hover:text-accent-secondary">
-                  {next.name}
-                </h2>
-                <p className="mt-2 max-w-xl text-sm text-muted">{next.headline}</p>
+              {nextCover ? (
+                <div className="relative aspect-[16/10] sm:aspect-auto sm:min-h-[7.5rem]">
+                  <Image
+                    src={nextCover.src}
+                    alt={nextCover.alt}
+                    fill
+                    sizes="192px"
+                    quality={70}
+                    className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
+                </div>
+              ) : null}
+              <div className="flex flex-col justify-between gap-4 p-6 sm:flex-row sm:items-end">
+                <div>
+                  <h2 className="text-2xl tracking-tight group-hover:text-accent-secondary">
+                    {next.name}
+                  </h2>
+                  <p className="mt-2 max-w-xl text-sm text-muted">{next.headline}</p>
+                </div>
+                <span className="inline-flex items-center gap-1 text-sm text-accent-secondary">
+                  Continue
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </span>
               </div>
-              <span className="inline-flex items-center gap-1 text-sm text-accent-secondary">
-                Continue
-                <ArrowUpRight className="h-3.5 w-3.5" />
-              </span>
             </Link>
           </div>
         ) : null}

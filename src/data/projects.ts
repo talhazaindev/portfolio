@@ -146,7 +146,14 @@ export const projects: Project[] = [
         items: ["Queues", "Webhooks / polling", "Retries", "Staging ↔ production parity"],
       },
     ],
-    media: [],
+    media: [
+      {
+        type: "interface",
+        src: "/ai-compare-hub.png",
+        alt: "AI Compare Hub recent generations dashboard with multimodal model outputs and asset history.",
+        caption: "Unified multimodal generation workspace",
+      },
+    ],
   },
   {
     slug: "medicai",
@@ -293,7 +300,14 @@ export const projects: Project[] = [
         items: ["LangSmith", "RAGAS", "Routing traces"],
       },
     ],
-    media: [],
+    media: [
+      {
+        type: "interface",
+        src: "/medic-ai.png",
+        alt: "MedicAI clinical operations dashboard with AI agents, appointments, and hospital analytics.",
+        caption: "Clinical agents & hospital operations interface",
+      },
+    ],
   },
   {
     slug: "mediax",
@@ -418,7 +432,14 @@ export const projects: Project[] = [
         items: ["Retry/backoff", "Caching", "Conflict resolution", "Idempotent upserts"],
       },
     ],
-    media: [],
+    media: [
+      {
+        type: "interface",
+        src: "/mediax.png",
+        alt: "MediaX map interface for finding optimal outdoor media spaces across the UAE.",
+        caption: "Geospatial OOH media discovery",
+      },
+    ],
   },
   {
     slug: "ecg-intelligence",
@@ -541,7 +562,14 @@ export const projects: Project[] = [
         items: ["Configurable maps", "Reusable workflows", "Vendor-agnostic outputs"],
       },
     ],
-    media: [],
+    media: [
+      {
+        type: "diagram",
+        src: "/ecg-unification.png",
+        alt: "ECG Data Unification enterprise architecture spanning context engine, platform, and delivery skills.",
+        caption: "Clinical signal fusion into one trusted dataset",
+      },
+    ],
   },
   // ——— Engineering Archive (caseStudy: false unless expanded later) ———
   {
@@ -567,7 +595,14 @@ export const projects: Project[] = [
       "LLM workflows packaged behind production APIs and containerized services.",
     ],
     technologies: ["Llama", "NLP", "FastAPI", "Docker", "Conversational AI"],
-    media: [],
+    media: [
+      {
+        type: "interface",
+        src: "/IMG_3080.png",
+        alt: "MoverGPT no-code AI chatbot platform admin dashboard and conversation interface.",
+        caption: "No-code AI chatbot platform",
+      },
+    ],
   },
   {
     slug: "voice-ai-workflows",
@@ -641,6 +676,11 @@ export function getNextCaseStudy(slug: string): Project | undefined {
   const index = list.findIndex((p) => p.slug === slug);
   if (index === -1) return undefined;
   return list[(index + 1) % list.length];
+}
+
+/** First product visual for list/cover treatments, if present. */
+export function getProjectCover(project: Project): Project["media"][number] | undefined {
+  return project.media[0];
 }
 
 /** Homepage production signals derived from real project metrics. */
