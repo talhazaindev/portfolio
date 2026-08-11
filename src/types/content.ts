@@ -67,6 +67,10 @@ export type AnatomyLayer = {
 export type EngineeringDecision = {
   title: string;
   rationale: string;
+  /** Optional constraint that forced the decision. */
+  constraint?: string;
+  /** Optional measurable or architectural result. */
+  result?: string;
 };
 
 export type Project = {

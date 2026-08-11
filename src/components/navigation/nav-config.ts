@@ -1,10 +1,9 @@
 import { siteConfig } from "@/data/site";
 
-/** Primary navigation — Writing reserved for future enablement. */
+/** Primary navigation — kept lean; capabilities live on homepage + command palette. */
 export const primaryNav = [
-  { label: "Work", href: "/work" },
+  { label: "Systems", href: "/work" },
   { label: "Experience", href: "/experience" },
-  { label: "Capabilities", href: "/#capabilities" },
   { label: "About", href: "/about" },
 ] as const;
 

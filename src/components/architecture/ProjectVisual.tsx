@@ -53,7 +53,12 @@ export function ProjectVisual({ project, className }: ProjectVisualProps) {
 
 function ParallelVisual({ tick }: { tick: number }) {
   const active = tick % 4;
-  const models = ["FLUX", "KLING", "VEO", "OPENAI"];
+  const models = [
+    { name: "FLUX", status: ["complete", "running", "queued", "complete"] },
+    { name: "KLING", status: ["running", "complete", "running", "queued"] },
+    { name: "VEO", status: ["queued", "queued", "complete", "running"] },
+    { name: "OPENAI", status: ["complete", "queued", "running", "complete"] },
+  ] as const;
   return (
     <div>
       <div className="mb-4 rounded-md border border-border bg-surface px-3 py-2 text-center text-xs">
@@ -63,7 +68,7 @@ function ParallelVisual({ tick }: { tick: number }) {
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         {models.map((model, index) => (
           <div
-            key={model}
+            key={model.name}
             className={cn(
               "rounded-md border px-2 py-3 text-center font-mono text-[11px] transition-colors duration-300",
               index === active
@@ -71,13 +76,21 @@ function ParallelVisual({ tick }: { tick: number }) {
                 : "border-border text-muted",
             )}
           >
-            {model}
+            {model.name}
           </div>
         ))}
       </div>
-      <div className="mt-4 space-y-2 text-center font-mono text-[10px] text-muted">
-        <div>ASYNC EXECUTION → NORMALIZE → ASSETS</div>
-        <div className="text-accent-secondary">sync pulse {active + 1}/4</div>
+      <div className="mt-4 rounded-md border border-border bg-background/50 p-3 font-mono text-[10px] leading-relaxed text-muted">
+        <div className="mb-2 text-accent-secondary">provider.status</div>
+        {models.map((model) => (
+          <div key={model.name} className="flex justify-between gap-4">
+            <span>{model.name}</span>
+            <span className="text-foreground/80">{model.status[active]}</span>
+          </div>
+        ))}
+      </div>
+      <div className="mt-3 text-center font-mono text-[10px] text-muted">
+        ASYNC EXECUTION → NORMALIZE → ASSETS
       </div>
     </div>
   );
@@ -86,6 +99,7 @@ function ParallelVisual({ tick }: { tick: number }) {
 function AgentStateVisual({ tick }: { tick: number }) {
   const states = ["TENANT", "ROUTER", "AGENTS", "HITL", "OUTPUT"];
   const active = tick % states.length;
+  const confidence = [0.91, 0.94, 0.88, 0.97, 0.93][active];
   return (
     <div className="flex flex-col gap-2">
       {states.map((state, index) => (
@@ -101,6 +115,10 @@ function AgentStateVisual({ tick }: { tick: number }) {
           {state}
         </div>
       ))}
+      <div className="mt-2 rounded-md border border-border bg-background/50 px-3 py-2 font-mono text-[10px] text-muted">
+        <span className="text-accent-secondary">route.confidence</span>
+        <span className="ml-3 text-foreground">{confidence.toFixed(2)}</span>
+      </div>
     </div>
   );
 }
@@ -142,6 +160,11 @@ function SpatialVisual({ tick }: { tick: number }) {
             <span className="font-mono text-[10px] text-foreground">{weight.value}%</span>
           </div>
         ))}
+      </div>
+      <div className="mt-4 rounded-md border border-border bg-background/50 p-3 font-mono text-[10px] leading-relaxed text-muted">
+        <div className="text-accent-secondary">rank =</div>
+        <div>0.30 footfall + 0.30 traffic</div>
+        <div>+ 0.20 density + 0.20 proximity</div>
       </div>
     </div>
   );

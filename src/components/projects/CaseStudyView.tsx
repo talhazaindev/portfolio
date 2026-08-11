@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import type { Project } from "@/types/content";
+import type { EngineeringDecision, Project } from "@/types/content";
 import { Container } from "@/components/ui/Container";
 import { ProjectLinks } from "@/components/projects/ProjectLinks";
 import { SystemAnatomy } from "@/components/anatomy/SystemAnatomy";
@@ -18,7 +18,7 @@ type CaseStudyViewProps = {
   next?: Project;
 };
 
-/** Flagship technical case study — role, anatomy, decisions, semantic architecture. */
+/** Flagship case study — editorial rhythm over numbered documentation. */
 export function CaseStudyView({ project, next }: CaseStudyViewProps) {
   useEffect(() => {
     track(AnalyticsEvents.caseStudyView, { project: project.slug });
@@ -42,6 +42,25 @@ export function CaseStudyView({ project, next }: CaseStudyViewProps) {
           </div>
         </header>
 
+        {/* MY ROLE — near the top */}
+        <section className="mt-12 rounded-[var(--radius-lg)] border border-border bg-surface/40 p-5 sm:p-7">
+          <h2 className="mono-label mb-3">My role</h2>
+          <p className="text-2xl tracking-tight text-foreground sm:text-3xl">{project.role}</p>
+          <ul className="mt-5 flex flex-wrap gap-2">
+            {project.responsibilities.map((item) => (
+              <li
+                key={item}
+                className="rounded-md border border-accent/30 bg-accent-soft px-2.5 py-1 text-xs text-foreground"
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+          {project.period ? (
+            <p className="mono-label mt-6">Period / {project.period}</p>
+          ) : null}
+        </section>
+
         {cover ? (
           <div className="relative mt-12 aspect-[21/9] overflow-hidden rounded-[var(--radius-lg)] border border-border bg-surface/40 sm:aspect-[2.4/1]">
             <Image
@@ -62,86 +81,73 @@ export function CaseStudyView({ project, next }: CaseStudyViewProps) {
           </div>
         ) : null}
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        {/* Visual grammar + problem/solution split */}
+        <div className="mt-14 grid gap-6 lg:grid-cols-2">
           <ProjectVisual project={project} />
-          <section className="rounded-[var(--radius-lg)] border border-border bg-surface/40 p-5 sm:p-6">
-            <h2 className="mono-label mb-3">My role</h2>
-            <p className="text-xl tracking-tight text-foreground">{project.role}</p>
-            <ul className="mt-4 flex flex-wrap gap-2">
-              {project.responsibilities.map((item) => (
-                <li
-                  key={item}
-                  className="rounded-md border border-accent/30 bg-accent-soft px-2.5 py-1 text-xs text-foreground"
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-            {project.period ? (
-              <p className="mono-label mt-6">Period / {project.period}</p>
+          <div className="flex flex-col gap-6">
+            {project.problem ? (
+              <div className="rounded-[var(--radius-lg)] border border-border bg-background/40 p-5 sm:p-6">
+                <h2 className="mono-label mb-3">Problem</h2>
+                <p className="text-sm leading-relaxed text-muted sm:text-base">{project.problem}</p>
+              </div>
             ) : null}
-          </section>
+            {project.solution ? (
+              <div className="rounded-[var(--radius-lg)] border border-border bg-surface/40 p-5 sm:p-6">
+                <h2 className="mono-label mb-3">System</h2>
+                <p className="text-sm leading-relaxed text-muted sm:text-base">{project.solution}</p>
+              </div>
+            ) : null}
+          </div>
         </div>
 
-
-        <SectionBlock number="01" title="Overview">
-          <p className="text-muted">{project.summary}</p>
-        </SectionBlock>
-
-        {project.problem ? (
-          <SectionBlock number="02" title="Problem">
-            <p className="text-muted">{project.problem}</p>
-          </SectionBlock>
-        ) : null}
-
-        {project.solution ? (
-          <SectionBlock number="03" title="System">
-            <p className="text-muted">{project.solution}</p>
-          </SectionBlock>
-        ) : null}
-
-        {project.anatomyLayers?.length ? (
-          <SectionBlock number="04" title="System anatomy">
-            <SystemAnatomy layers={project.anatomyLayers} />
-          </SectionBlock>
-        ) : null}
-
+        {/* Architecture — full width */}
         {project.architecture ? (
-          <SectionBlock number="05" title="Architecture">
+          <section className="mt-16">
+            <h2 className="mono-label mb-4">Architecture</h2>
+            <p className="mb-6 max-w-2xl text-xl tracking-tight text-foreground sm:text-2xl">
+              {project.architecture.description ?? project.headline}
+            </p>
             <ArchitectureCanvas architecture={project.architecture} />
-          </SectionBlock>
+          </section>
         ) : null}
 
+        {/* System anatomy */}
+        {project.anatomyLayers?.length ? (
+          <section className="mt-16">
+            <h2 className="mono-label mb-4">System anatomy</h2>
+            <SystemAnatomy layers={project.anatomyLayers} />
+          </section>
+        ) : null}
+
+        {/* Engineering decisions — split modules */}
         {project.engineeringDecisions?.length ? (
-          <SectionBlock number="06" title="Engineering decisions">
-            <div className="grid gap-3 sm:grid-cols-2">
+          <section className="mt-16">
+            <h2 className="mono-label mb-6">Engineering decisions</h2>
+            <div className="space-y-4">
               {project.engineeringDecisions.map((decision) => (
-                <article
-                  key={decision.title}
-                  className="rounded-[var(--radius-md)] border border-border bg-surface/40 p-5"
-                >
-                  <h3 className="text-base text-foreground">{decision.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">{decision.rationale}</p>
-                </article>
+                <DecisionModule key={decision.title} decision={decision} />
               ))}
             </div>
-          </SectionBlock>
+          </section>
         ) : null}
 
+        {/* Reliability — system status style */}
         {project.reliability?.length ? (
-          <SectionBlock number="07" title="Reliability / production">
+          <section className="mt-16">
+            <h2 className="mono-label mb-4">Reliability</h2>
             <ul className="grid gap-2 sm:grid-cols-2">
               {project.reliability.map((item) => (
                 <li
                   key={item}
-                  className="rounded-md border border-border bg-background/40 px-3 py-2 text-sm text-muted"
+                  className="flex items-center justify-between gap-4 rounded-md border border-border bg-background/40 px-4 py-3 font-mono text-xs"
                 >
-                  {item}
+                  <span className="text-muted uppercase tracking-wider">{item}</span>
+                  <span className="text-accent-secondary">ACTIVE</span>
                 </li>
               ))}
             </ul>
             {project.evaluation?.length ? (
-              <div className="mt-4">
+              <div className="mt-6">
                 <p className="mono-label mb-2">Evaluation</p>
                 <div className="flex flex-wrap gap-2">
                   {project.evaluation.map((item) => (
@@ -155,10 +161,37 @@ export function CaseStudyView({ project, next }: CaseStudyViewProps) {
                 </div>
               </div>
             ) : null}
-          </SectionBlock>
+          </section>
         ) : null}
 
-        <SectionBlock number="08" title="Stack">
+        {/* Outcomes — large typography */}
+        <section className="mt-16 border-y border-border/70 py-12">
+          <h2 className="mono-label mb-8">Outcomes</h2>
+          {project.metrics.length ? (
+            <div className="mb-10 grid grid-cols-2 gap-6 sm:grid-cols-4">
+              {project.metrics.map((metric) => (
+                <div key={`${metric.value}-${metric.label}`}>
+                  <div className="font-mono text-3xl tracking-tight text-foreground sm:text-4xl">
+                    {metric.value}
+                  </div>
+                  <div className="mt-2 text-sm uppercase tracking-wider text-muted">
+                    {metric.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : null}
+          <ul className="max-w-3xl space-y-4">
+            {project.outcomes.map((outcome) => (
+              <li key={outcome} className="border-l-2 border-accent/50 pl-4 text-sm text-muted sm:text-base">
+                {outcome}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="mt-14">
+          <h2 className="mono-label mb-4">Stack</h2>
           <div className="flex flex-wrap gap-2">
             {project.technologies.map((tech) => (
               <span
@@ -169,37 +202,11 @@ export function CaseStudyView({ project, next }: CaseStudyViewProps) {
               </span>
             ))}
           </div>
-        </SectionBlock>
-
-        <SectionBlock number="09" title="Outcomes">
-          <ul className="space-y-3">
-            {project.outcomes.map((outcome) => (
-              <li key={outcome} className="border-l-2 border-accent/50 pl-4 text-sm text-muted">
-                {outcome}
-              </li>
-            ))}
-          </ul>
-          {project.metrics.length ? (
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {project.metrics.map((metric) => (
-                <div
-                  key={`${metric.value}-${metric.label}`}
-                  className="rounded-md border border-border bg-surface/40 p-3"
-                >
-                  <div className="font-mono text-xl text-foreground">{metric.value}</div>
-                  <div className="mt-1 text-xs text-muted">{metric.label}</div>
-                </div>
-              ))}
-            </div>
-          ) : null}
-        </SectionBlock>
-
-        <SectionBlock number="10" title="Links">
-          <ProjectLinks project={project} />
-        </SectionBlock>
+        </section>
 
         {project.media.length ? (
-          <SectionBlock number="Media" title="Product visuals">
+          <section className="mt-14">
+            <h2 className="mono-label mb-4">Product visuals</h2>
             <div className="grid gap-4 sm:grid-cols-2">
               {project.media.map((item) => (
                 <figure
@@ -222,8 +229,13 @@ export function CaseStudyView({ project, next }: CaseStudyViewProps) {
                 </figure>
               ))}
             </div>
-          </SectionBlock>
+          </section>
         ) : null}
+
+        <section className="mt-14">
+          <h2 className="mono-label mb-4">Links</h2>
+          <ProjectLinks project={project} />
+        </section>
 
         {next ? (
           <div className="mt-16 border-t border-border pt-10">
@@ -264,22 +276,31 @@ export function CaseStudyView({ project, next }: CaseStudyViewProps) {
   );
 }
 
-function SectionBlock({
-  number,
-  title,
-  children,
-}: {
-  number: string;
-  title: string;
-  children: React.ReactNode;
-}) {
+function DecisionModule({ decision }: { decision: EngineeringDecision }) {
   return (
-    <section className="mt-14 border-t border-border/70 pt-10">
-      <div className="mono-label mb-3">
-        {number} — {title}
+    <article className="grid gap-0 overflow-hidden rounded-[var(--radius-lg)] border border-border sm:grid-cols-[1fr_1.2fr]">
+      <div className="border-b border-border bg-surface/50 p-5 sm:border-b-0 sm:border-r sm:p-6">
+        <p className="mono-label mb-2">Decision</p>
+        <h3 className="text-lg tracking-tight text-foreground sm:text-xl">{decision.title}</h3>
       </div>
-      <h2 className="sr-only">{title}</h2>
-      {children}
-    </section>
+      <div className="space-y-4 p-5 sm:p-6">
+        {decision.constraint ? (
+          <div>
+            <p className="mono-label mb-1.5">Constraint</p>
+            <p className="text-sm leading-relaxed text-muted">{decision.constraint}</p>
+          </div>
+        ) : null}
+        <div>
+          <p className="mono-label mb-1.5">{decision.constraint ? "Approach" : "Why"}</p>
+          <p className="text-sm leading-relaxed text-muted">{decision.rationale}</p>
+        </div>
+        {decision.result ? (
+          <div>
+            <p className="mono-label mb-1.5">Result</p>
+            <p className="text-sm leading-relaxed text-foreground/90">{decision.result}</p>
+          </div>
+        ) : null}
+      </div>
+    </article>
   );
 }

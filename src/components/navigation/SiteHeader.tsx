@@ -57,7 +57,7 @@ export function SiteHeader() {
             ))}
           </nav>
 
-          <div className="hidden items-center gap-3 lg:flex">
+          <div className="hidden items-center gap-4 lg:flex">
             {social.github ? (
               <a
                 href={social.github}
@@ -69,15 +69,6 @@ export function SiteHeader() {
                 GitHub
               </a>
             ) : null}
-            <a
-              href={social.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="focus-ring text-sm text-muted transition-colors hover:text-foreground"
-              onClick={() => track(AnalyticsEvents.linkedinClick, { source: "nav" })}
-            >
-              LinkedIn
-            </a>
             <Magnetic>
               <Button href="/contact" variant="primary">
                 Let&apos;s Talk

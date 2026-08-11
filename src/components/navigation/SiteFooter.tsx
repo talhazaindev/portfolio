@@ -20,7 +20,7 @@ export function SiteFooter() {
         </div>
         <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted">
           <Link href="/work" className="focus-ring hover:text-foreground">
-            Work
+            Systems
           </Link>
           <Link href="/experience" className="focus-ring hover:text-foreground">
             Experience

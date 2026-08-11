@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import { getCaseStudyProjects } from "@/data/projects";
+import { siteConfig } from "@/data/site";
 import { social } from "@/data/social";
 import { AnalyticsEvents, track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
@@ -16,12 +17,12 @@ type Command = {
   run: () => void;
 };
 
-/** Keyboard command interface (Ctrl/⌘ K). Inspired by 21st.dev command palettes. */
+/** Keyboard command interface (Ctrl/⌘ K). */
 export function CommandPalette() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [systemNote, setSystemNote] = useState(false);
+  const [systemStatus, setSystemStatus] = useState(false);
   const [active, setActive] = useState(0);
 
   const commands = useMemo<Command[]>(() => {
@@ -34,16 +35,39 @@ export function CommandPalette() {
     }));
 
     return [
-      { id: "home", label: "Go Home", hint: "Navigate", run: () => router.push("/") },
-      { id: "work", label: "View Work", hint: "Navigate", run: () => router.push("/work") },
+      {
+        id: "systems",
+        label: "Explore Systems",
+        hint: "Navigate",
+        keywords: "work portfolio",
+        run: () => router.push("/work"),
+      },
       ...projectCommands,
+      {
+        id: "architecture",
+        label: "View Architecture",
+        hint: "Navigate",
+        keywords: "capability graph systems",
+        run: () => router.push("/#capabilities"),
+      },
       {
         id: "experience",
         label: "Experience",
         hint: "Navigate",
         run: () => router.push("/experience"),
       },
-      { id: "about", label: "About", hint: "Navigate", run: () => router.push("/about") },
+      {
+        id: "capabilities",
+        label: "Capabilities",
+        hint: "Navigate",
+        run: () => router.push("/#capabilities"),
+      },
+      {
+        id: "about",
+        label: "About Talha",
+        hint: "Navigate",
+        run: () => router.push("/about"),
+      },
       {
         id: "contact",
         label: "Email Talha",
@@ -79,7 +103,7 @@ export function CommandPalette() {
         ? [
             {
               id: "resume",
-              label: "View Résumé",
+              label: "Download Résumé",
               hint: "PDF",
               run: () => {
                 track(AnalyticsEvents.resumeClick, { source: "command_palette" });
@@ -89,18 +113,11 @@ export function CommandPalette() {
           ]
         : []),
       {
-        id: "architecture",
-        label: "architecture",
-        hint: "Easter egg",
-        keywords: "capability graph systems",
-        run: () => router.push("/#capabilities"),
-      },
-      {
-        id: "system",
-        label: "/system",
-        hint: "Easter egg",
-        keywords: "site architecture observatory",
-        run: () => setSystemNote(true),
+        id: "system-status",
+        label: "system status",
+        hint: "Brand",
+        keywords: "status focus agentic",
+        run: () => setSystemStatus(true),
       },
     ];
   }, [router]);
@@ -122,11 +139,11 @@ export function CommandPalette() {
         setOpen((value) => !value);
         setQuery("");
         setActive(0);
-        setSystemNote(false);
+        setSystemStatus(false);
       }
       if (event.key === "Escape") {
         setOpen(false);
-        setSystemNote(false);
+        setSystemStatus(false);
       }
     }
     window.addEventListener("keydown", onKey);
@@ -166,10 +183,10 @@ export function CommandPalette() {
               }
               if (event.key === "Enter" && filtered[active]) {
                 filtered[active].run();
-                if (filtered[active].id !== "system") setOpen(false);
+                if (filtered[active].id !== "system-status") setOpen(false);
               }
             }}
-            placeholder="Jump to systems, contact, GitHub…"
+            placeholder="Jump to systems, about, GitHub…"
             className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted"
             aria-label="Command search"
           />
@@ -178,18 +195,24 @@ export function CommandPalette() {
           </kbd>
         </div>
 
-        {systemNote ? (
-          <div className="space-y-2 p-5 text-sm text-muted">
-            <p className="font-medium text-foreground">Site architecture</p>
-            <p>
-              Next.js App Router · typed content layer · semantic architecture primitives ·
-              motion tiers · privacy-conscious analytics. Designed as an Intelligent Systems /
-              Digital Observatory brand surface.
-            </p>
+        {systemStatus ? (
+          <div className="space-y-4 p-5 text-sm">
+            <div>
+              <p className="font-medium tracking-tight text-foreground">{siteConfig.name}</p>
+              <p className="mono-label mt-1">{siteConfig.role}</p>
+            </div>
+            <div>
+              <p className="mono-label mb-2">Focus</p>
+              <ul className="space-y-1 text-muted">
+                {siteConfig.specialties.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
             <button
               type="button"
               className="focus-ring mt-2 text-accent-secondary"
-              onClick={() => setSystemNote(false)}
+              onClick={() => setSystemStatus(false)}
             >
               Back to commands
             </button>
@@ -214,7 +237,7 @@ export function CommandPalette() {
                     onMouseEnter={() => setActive(index)}
                     onClick={() => {
                       command.run();
-                      if (command.id !== "system") setOpen(false);
+                      if (command.id !== "system-status") setOpen(false);
                     }}
                   >
                     <span>{command.label}</span>

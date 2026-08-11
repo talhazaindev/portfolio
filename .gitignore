@@ -49,3 +49,4 @@ next-env.d.ts
 
 # local scratch / source assets not served by the app
 /logo.png
+/assets/source/

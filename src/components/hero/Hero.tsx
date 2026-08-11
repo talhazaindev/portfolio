@@ -95,25 +95,26 @@ export function Hero() {
             >
               <Magnetic>
                 <Button href="/work" className="min-h-11 px-5 text-[15px]">
-                  Explore Selected Systems
+                  Explore Systems
                   <ArrowUpRight className="h-4 w-4" aria-hidden />
                 </Button>
               </Magnetic>
-              <Button href="/contact" variant="secondary" className="min-h-11 px-5">
-                Let&apos;s Talk
-              </Button>
               {social.github ? (
                 <TrackLink
                   href={social.github}
                   event={AnalyticsEvents.githubClick}
                   payload={{ source: "hero" }}
-                  className="focus-ring inline-flex items-center gap-1 px-1 text-sm text-muted transition-colors duration-180 hover:text-foreground"
+                  className="focus-ring inline-flex min-h-11 items-center gap-1 rounded-md border border-border-strong px-5 text-sm text-foreground transition-colors duration-180 hover:bg-accent-soft"
                   external
                 >
                   GitHub
                   <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
                 </TrackLink>
-              ) : null}
+              ) : (
+                <Button href="/contact" variant="secondary" className="min-h-11 px-5">
+                  Let&apos;s Talk
+                </Button>
+              )}
             </motion.div>
 
             <motion.p

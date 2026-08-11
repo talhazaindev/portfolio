@@ -59,18 +59,28 @@ export const projects: Project[] = [
     engineeringDecisions: [
       {
         title: "Asynchronous generation architecture",
+        constraint:
+          "Generation latency can exceed a normal HTTP request lifecycle across multimodal providers.",
         rationale:
           "Multimodal jobs are long-running and provider-specific. Queue-based processing with webhook/polling status tracking keeps the API responsive while preserving model-specific parameters.",
+        result:
+          "Responsive API surface with independently tracked jobs, retries, and status webhooks/polling.",
       },
       {
         title: "Normalized result pipeline",
+        constraint:
+          "Providers return incompatible payloads and model-specific parameter shapes.",
         rationale:
-          "Providers return incompatible payloads. A normalization layer enables comparison UI, history, and asset handling without coupling the product to any single vendor.",
+          "A normalization layer enables comparison UI, history, and asset handling without coupling the product to any single vendor.",
+        result: "Side-by-side comparison and shared generation history across the model ecosystem.",
       },
       {
         title: "Staging and production workflow parity",
+        constraint:
+          "Adding or updating providers risks regressions if environments diverge.",
         rationale:
           "Generation history and parameter preservation across environments reduce regression risk when adding or updating models.",
+        result: "Parity between staging and production generation workflows.",
       },
     ],
     reliability: [
@@ -207,23 +217,35 @@ export const projects: Project[] = [
     engineeringDecisions: [
       {
         title: "Explicit LangGraph state orchestration",
+        constraint:
+          "Clinical tasks need structured routing across specialists with inspectable transitions.",
         rationale:
-          "Clinical tasks need structured routing across specialists. A state graph makes agent transitions, tool calls, and approval gates inspectable and controllable.",
+          "A state graph makes agent transitions, tool calls, and approval gates inspectable and controllable.",
+        result: "Controllable multi-agent clinical workflows with explicit route selection.",
       },
       {
         title: "Human-in-the-loop gating",
+        constraint:
+          "High-risk clinical outputs require approval boundaries before release.",
         rationale:
-          "High-risk clinical outputs require approval boundaries. HITL gates prevent automatic release of sensitive recommendations without review.",
+          "HITL gates prevent automatic release of sensitive recommendations without review.",
+        result: "Approval gates on sensitive clinical recommendations.",
       },
       {
         title: "Tenant isolation with RBAC",
+        constraint:
+          "Multi-tenant clinical data cannot share context casually.",
         rationale:
-          "Multi-tenant clinical data cannot share context casually. Isolation and role controls are first-class architecture constraints, not afterthoughts.",
+          "Isolation and role controls are first-class architecture constraints, not afterthoughts.",
+        result: "Tenant isolation and role-based access as core platform constraints.",
       },
       {
         title: "LangSmith + RAGAS evaluation loop",
+        constraint:
+          "Agent quality must be measured as orchestration changes.",
         rationale:
-          "Agent quality must be measured. Tracing and retrieval evaluation close the loop between orchestration changes and measurable behavior.",
+          "Tracing and retrieval evaluation close the loop between orchestration changes and measurable behavior.",
+        result: "Observable agent behavior with retrieval evaluation feedback.",
       },
     ],
     reliability: [
@@ -364,18 +386,24 @@ export const projects: Project[] = [
     engineeringDecisions: [
       {
         title: "Structured geo-intent extraction",
+        constraint: "Campaign language is ambiguous and uneven across advertisers.",
         rationale:
-          "Campaign language is ambiguous. Parsing into validated locations and POI types makes retrieval deterministic and auditable.",
+          "Parsing into validated locations and POI types makes retrieval deterministic and auditable.",
+        result: "Deterministic geo-intent for inventory retrieval.",
       },
       {
         title: "Weighted business ranking",
+        constraint: "Inventory quality is multi-signal — not a single model score.",
         rationale:
-          "Inventory quality is multi-signal. Explicit weights (30/30/20/20) encode business priorities instead of opaque model scores alone.",
+          "Explicit weights (30/30/20/20) encode business priorities instead of opaque model scores alone.",
+        result: "Auditable ranking across footfall, traffic, POI density, and proximity.",
       },
       {
         title: "Caching, retry/backoff, idempotent upserts",
+        constraint: "External APIs and enrichment steps fail under load.",
         rationale:
-          "External APIs and enrichment steps fail. Retry/backoff, caching, conflict resolution, and idempotent writes keep the pipeline production-safe under load.",
+          "Retry/backoff, caching, conflict resolution, and idempotent writes keep the pipeline production-safe under load.",
+        result: "Production-safe enrichment under external API volatility.",
       },
     ],
     reliability: [
@@ -494,18 +522,24 @@ export const projects: Project[] = [
     engineeringDecisions: [
       {
         title: "Canonical clinical schema",
+        constraint: "Vendor formats diverge across PDF, image, CSV, and waveform inputs.",
         rationale:
-          "Vendor formats diverge. A single canonical model decouples analytics/ML from upstream format churn.",
+          "A single canonical model decouples analytics/ML from upstream format churn.",
+        result: "One trusted schema for analytics and ML pipelines.",
       },
       {
         title: "Configurable field mapping",
+        constraint: "New vendors and fields appear continuously.",
         rationale:
-          "New vendors and fields appear continuously. Mapping configuration avoids hard-coded parsers for every source.",
+          "Mapping configuration avoids hard-coded parsers for every source.",
+        result: "Reusable mapping without per-vendor hard-coded parsers.",
       },
       {
         title: "ML-ready normalization",
+        constraint: "Analyst spreadsheets do not scale into training inputs.",
         rationale:
           "The pipeline targets reusable training/analytics inputs, not one-off analyst spreadsheets.",
+        result: "Normalized outputs ready for analytics and ML workloads.",
       },
     ],
     reliability: [

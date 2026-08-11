@@ -9,11 +9,11 @@ type BrandSignatureProps = {
   compact?: boolean;
 };
 
-/** Square TZ logo sizes (1:1). */
+/** Square TZ logo sizes (1:1) — navbar stays compact at 24–32px. */
 const sizes = {
-  sm: 32,
-  md: 44,
-  lg: 56,
+  sm: 28,
+  md: 32,
+  lg: 48,
 } as const;
 
 /**

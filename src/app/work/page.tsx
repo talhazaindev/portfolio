@@ -5,7 +5,7 @@ import { getArchiveProjects, getFeaturedProjects } from "@/data/projects";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createMetadata({
-  title: "Work",
+  title: "Systems",
   description:
     "Featured production AI systems and engineering archive — agentic AI, generative media, semantic search, and clinical data platforms by Talha Zain.",
   path: "/work",
@@ -19,7 +19,7 @@ export default function WorkPage() {
     <div className="pb-24 pt-28 sm:pt-32">
       <Container>
         <header className="mb-12 max-w-3xl">
-          <p className="mono-label mb-4">Work</p>
+          <p className="mono-label mb-4">Systems</p>
           <h1 className="section-display text-balance">
             Selected systems & engineering archive.
           </h1>
