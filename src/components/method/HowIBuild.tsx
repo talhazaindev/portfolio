@@ -1,27 +1,28 @@
 import { Section } from "@/components/ui/Section";
 import { buildPipeline } from "@/data/capabilities";
 
+/**
+ * Concise principles — supports Signature Path without repeating its thesis.
+ * No large cards; one line of supporting content each.
+ */
 export function HowIBuild() {
   return (
     <Section
       eyebrow="How I build"
-      title="From model capability to production system."
-      description="Methodology over tool lists—understand, design, orchestrate, evaluate, ship, observe."
+      title="Operating principles."
+      description="Six moves from problem framing to production observation."
+      tone="quiet"
+      containerWidth="medium"
+      className="!pt-8 !pb-16 sm:!pt-10 sm:!pb-20"
     >
-      <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {buildPipeline.map((step, index) => (
-          <li
-            key={step.step}
-            className="relative rounded-[var(--radius-md)] border border-border bg-surface/50 p-5"
-          >
-            <div className="mono-label mb-3">{step.step}</div>
-            <h3 className="text-lg tracking-tight text-foreground">{step.title}</h3>
-            <p className="mt-2 text-sm text-muted">{step.detail}</p>
-            {index < buildPipeline.length - 1 ? (
-              <span className="mono-label absolute right-4 top-5 hidden text-accent-secondary lg:block">
-                ↓
-              </span>
-            ) : null}
+      <ol className="grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+        {buildPipeline.map((step) => (
+          <li key={step.step} className="relative">
+            <div className="mono-label mb-2">{step.step}</div>
+            <h3 className="text-base tracking-tight text-heading sm:text-lg">
+              {step.title}
+            </h3>
+            <p className="mt-1.5 text-sm text-muted">{step.detail}</p>
           </li>
         ))}
       </ol>

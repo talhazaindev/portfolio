@@ -12,7 +12,7 @@ export const siteConfig = {
     (process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
       : "https://talhazain.com"),
-  location: "Islamabad, Pakistan",
+  location: "Pakistan",
   role: "Applied AI Engineer",
   positioning: "AI Systems Architect",
   tagline: "Building production AI systems that reason, retrieve, orchestrate and act.",

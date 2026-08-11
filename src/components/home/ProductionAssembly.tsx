@@ -9,6 +9,7 @@ import {
   type MotionValue,
 } from "motion/react";
 import { Container } from "@/components/ui/Container";
+import { SectionEnvironment } from "@/components/ui/SectionEnvironment";
 import { cn } from "@/lib/cn";
 
 const STAGES = [
@@ -36,8 +37,8 @@ function getServerDesktopSnapshot() {
 }
 
 /**
- * Single signature scroll moment: model capability → production system.
- * One heading in the DOM; list mode switches to avoid duplicate SEO content.
+ * Signature path — interactive methodology climax.
+ * How I Build below is principles-only to avoid duplicate messaging.
  */
 export function ProductionAssembly() {
   const reduce = useReducedMotion();
@@ -54,18 +55,17 @@ export function ProductionAssembly() {
   });
 
   return (
-    <section
+    <SectionEnvironment
       ref={sectionRef}
       id="assembly"
-      className={cn(
-        "relative border-y border-border/50 bg-background-elevated/20",
-        scrub ? "h-[140vh]" : "py-20 sm:py-24",
-      )}
+      tone="quiet"
+      ghost="SHIP"
+      className={cn(scrub ? "h-[115vh]" : "py-16 sm:py-20")}
       aria-labelledby="assembly-heading"
     >
       {scrub ? (
         <div className="sticky top-0 flex h-[100dvh] items-center overflow-hidden">
-          <Container className="relative z-10 w-full">
+          <Container width="medium" className="relative z-10 w-full">
             <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.1fr]">
               <AssemblyHeader />
               <ol className="relative space-y-2">
@@ -83,7 +83,7 @@ export function ProductionAssembly() {
           </Container>
         </div>
       ) : (
-        <Container>
+        <Container width="medium">
           <AssemblyHeader />
           <ol className="mt-10 flex flex-col gap-3 sm:max-w-md">
             {STAGES.map((stage, index) => {
@@ -92,10 +92,9 @@ export function ProductionAssembly() {
                 <li
                   key={stage.id}
                   className={cn(
-                    "flex items-center gap-3 rounded-md border px-4 py-3 font-mono text-xs tracking-wider",
-                    isLast
-                      ? "border-signal/45 bg-signal-08 text-foreground"
-                      : "border-border text-muted",
+                    "flex items-center gap-3 px-1 py-3 font-mono text-xs tracking-wider",
+                    isLast ? "text-foreground" : "text-muted",
+                    index > 0 && "border-t border-border/40",
                   )}
                 >
                   <span className={cn(isLast ? "text-signal" : "text-muted")}>
@@ -108,7 +107,7 @@ export function ProductionAssembly() {
                       Signal
                     </span>
                   ) : (
-                    <span className="ml-auto text-system-cyan/50" aria-hidden>
+                    <span className="ml-auto text-system-cyan/40" aria-hidden>
                       ↓
                     </span>
                   )}
@@ -118,7 +117,7 @@ export function ProductionAssembly() {
           </ol>
         </Container>
       )}
-    </section>
+    </SectionEnvironment>
   );
 }
 
@@ -126,7 +125,7 @@ function AssemblyHeader() {
   return (
     <div>
       <p className="mono-label mb-4">Signature path</p>
-      <h2 id="assembly-heading" className="section-display max-w-2xl text-balance">
+      <h2 id="assembly-heading" className="section-display max-w-2xl text-balance text-heading">
         From model capability to production system.
       </h2>
       <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">
@@ -157,8 +156,8 @@ function AssemblyStage({
     <motion.li
       style={{ opacity, x }}
       className={cn(
-        "flex items-center gap-3 rounded-md border bg-surface/40 px-4 py-3 font-mono text-xs tracking-wider",
-        isLast ? "border-signal/45 text-foreground" : "border-border text-foreground/90",
+        "flex items-center gap-3 border-b border-border/35 px-1 py-3.5 font-mono text-xs tracking-wider last:border-b-0",
+        isLast ? "text-foreground" : "text-foreground/90",
       )}
     >
       <span className={cn(isLast ? "text-signal" : "text-muted")}>
@@ -171,7 +170,7 @@ function AssemblyStage({
           Production AI
         </span>
       ) : (
-        <span className="ml-auto text-system-cyan/60" aria-hidden>
+        <span className="ml-auto text-system-cyan/50" aria-hidden>
           ↓
         </span>
       )}

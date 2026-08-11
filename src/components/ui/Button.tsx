@@ -5,10 +5,10 @@ type ButtonVariant = "primary" | "secondary" | "ghost";
 
 const variants: Record<ButtonVariant, string> = {
   primary:
-    "bg-accent text-white shadow-[0_0_0_1px_rgba(59,130,246,0.45),0_10px_30px_rgba(59,130,246,0.18)] hover:bg-[#4b8fff]",
+    "bg-system-navy text-breakout-text shadow-[var(--shadow-sm)] hover:bg-system-navy-deep",
   secondary:
-    "bg-transparent text-foreground border border-border-strong hover:border-accent hover:bg-accent-soft",
-  ghost: "bg-transparent text-muted hover:text-foreground hover:bg-white/5",
+    "bg-transparent text-ink border border-border-strong hover:border-system-navy/40 hover:bg-canvas-warm/60",
+  ghost: "bg-transparent text-muted hover:text-ink hover:bg-canvas-warm/50",
 };
 
 const base =
@@ -26,7 +26,7 @@ type ButtonProps = {
   "aria-label"?: string;
 };
 
-/** Brand button — link or native button. */
+/** Brand button — navy primary, restrained secondary. */
 export function Button({
   children,
   className,

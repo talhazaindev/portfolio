@@ -31,7 +31,7 @@ export function Spotlight({ children, className }: SpotlightProps) {
       onMouseMove={onMove}
       onMouseLeave={() => setActive(false)}
       className={cn(
-        "relative overflow-hidden rounded-[var(--radius-lg)] border border-border bg-surface/70",
+        "relative overflow-hidden rounded-[var(--radius-lg)] border border-border/60 bg-surface/40",
         className,
       )}
     >
@@ -40,7 +40,7 @@ export function Spotlight({ children, className }: SpotlightProps) {
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 md:group-hover:opacity-100"
         style={{
           opacity: active ? 1 : 0,
-          background: `radial-gradient(420px circle at ${coords.x}px ${coords.y}px, rgba(59,130,246,0.14), transparent 55%)`,
+          background: `radial-gradient(420px circle at ${coords.x}px ${coords.y}px, rgba(45,108,223,0.08), transparent 55%)`,
         }}
       />
       <div className="relative z-10">{children}</div>

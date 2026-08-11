@@ -51,7 +51,6 @@ export function personJsonLd(): Record<string, unknown> {
     email: social.email,
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Islamabad",
       addressCountry: "PK",
     },
     sameAs: [social.linkedin, social.github].filter(Boolean),

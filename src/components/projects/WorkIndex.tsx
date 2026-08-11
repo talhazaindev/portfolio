@@ -150,9 +150,7 @@ export function WorkIndex({ featured, archive }: WorkIndexProps) {
         <section>
           <h2 className="mono-label mb-2">Engineering archive</h2>
           <p className="mb-5 max-w-2xl text-sm text-muted">
-            Additional systems and platforms. Not every entry has a deep case study—add one by
-            setting <code className="text-foreground">caseStudy: true</code> in{" "}
-            <code className="text-foreground">projects.ts</code>.
+            Additional systems across retail, healthcare, recruitment, legal data, and applied NLP.
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
             <AnimatePresence mode="popLayout">
@@ -183,7 +181,7 @@ export function WorkIndex({ featured, archive }: WorkIndexProps) {
                     ) : null}
                     <div className="p-5">
                       <div className="mono-label mb-2">
-                        {project.categories[0]} · {project.status}
+                        {project.categories[0]} · {project.domains[0]} · {project.status}
                       </div>
                       <h3 className="text-lg tracking-tight">{project.name}</h3>
                       <p className="mt-2 text-sm text-muted">{project.summary}</p>
@@ -197,6 +195,17 @@ export function WorkIndex({ featured, archive }: WorkIndexProps) {
                           </span>
                         ))}
                       </div>
+                      {project.github ? (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="focus-ring mt-4 inline-flex items-center gap-1 text-sm text-system-blue transition-colors hover:text-system-navy"
+                        >
+                          View on GitHub
+                          <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+                        </a>
+                      ) : null}
                     </div>
                   </motion.article>
                 );

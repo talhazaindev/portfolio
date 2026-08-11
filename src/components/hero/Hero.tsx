@@ -5,6 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { Container } from "@/components/ui/Container";
+import { SectionEnvironment } from "@/components/ui/SectionEnvironment";
 import { StatusLabel } from "@/components/brand/StatusLabel";
 import { HeroSystemGraph } from "@/components/hero/HeroSystemGraph";
 import { siteConfig } from "@/data/site";
@@ -13,14 +14,13 @@ import { heroStagger, motionTiers } from "@/lib/motion";
 import { TrackLink } from "@/components/analytics/TrackLink";
 import { AnalyticsEvents } from "@/lib/analytics";
 
-/** Opening brand statement + interactive system visual — equal narrative weight. */
+/** Opening brand statement + interactive system visual — warm ivory canvas. */
 export function Hero() {
   const reduce = useReducedMotion();
 
   return (
-    <section className="relative overflow-hidden pt-28 sm:pt-32 lg:pt-36">
-      <div className="pointer-events-none absolute inset-0 grid-overlay opacity-70" aria-hidden />
-      <Container>
+    <SectionEnvironment tone="void" grid className="pt-28 sm:pt-32 lg:pt-36 pb-16 sm:pb-20">
+      <Container width="wide">
         <div className="grid items-start gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-stretch lg:gap-12 xl:gap-14">
           <motion.div
             initial={reduce ? false : "hidden"}
@@ -46,7 +46,7 @@ export function Hero() {
             </motion.div>
 
             <motion.h1
-              className="hero-display text-foreground"
+              className="hero-display"
               variants={
                 reduce
                   ? undefined
@@ -59,16 +59,16 @@ export function Hero() {
               <span className="block max-w-[11ch] sm:max-w-none">
                 I architect AI systems
               </span>
-              <span className="mt-1 block max-w-[14ch] text-foreground/92 sm:mt-1.5 sm:max-w-[16ch]">
+              <span className="mt-1 block max-w-[14ch] text-ink-strong/92 sm:mt-1.5 sm:max-w-[16ch]">
                 that reason, retrieve,
               </span>
-              <span className="mt-1 block text-foreground/88 sm:mt-1.5">
+              <span className="mt-1 block text-ink-strong/88 sm:mt-1.5">
                 orchestrate &amp; act.
               </span>
             </motion.h1>
 
             <motion.p
-              className="mt-6 max-w-[36rem] text-base leading-relaxed text-muted sm:text-lg"
+              className="mt-6 max-w-[36rem] text-base leading-relaxed text-ink-muted sm:text-lg"
               variants={
                 reduce
                   ? undefined
@@ -104,7 +104,7 @@ export function Hero() {
                   href={social.github}
                   event={AnalyticsEvents.githubClick}
                   payload={{ source: "hero" }}
-                  className="focus-ring inline-flex min-h-11 items-center gap-1 rounded-md border border-border-strong px-5 text-sm text-foreground transition-colors duration-180 hover:bg-accent-soft"
+                  className="focus-ring inline-flex min-h-11 items-center gap-1 rounded-md border border-border-strong px-5 text-sm text-ink transition-colors duration-180 hover:bg-canvas-warm/70"
                   external
                 >
                   GitHub
@@ -118,7 +118,7 @@ export function Hero() {
             </motion.div>
 
             <motion.p
-              className="mono-label mt-10 max-w-md"
+              className="mono-label mt-10 max-w-md !text-system-navy/80"
               variants={
                 reduce
                   ? undefined
@@ -135,14 +135,10 @@ export function Hero() {
             transition={{ ...motionTiers.cinematic, delay: reduce ? 0 : 0.12 }}
             className="relative flex min-h-[32rem] sm:min-h-[36rem] lg:min-h-full lg:h-full"
           >
-            <div
-              className="pointer-events-none absolute -inset-6 -z-10 rounded-[2rem] bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.12),transparent_65%)]"
-              aria-hidden
-            />
             <HeroSystemGraph />
           </motion.div>
         </div>
       </Container>
-    </section>
+    </SectionEnvironment>
   );
 }

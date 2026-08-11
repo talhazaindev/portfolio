@@ -14,6 +14,7 @@ type Node = {
   x: number;
   y: number;
   hub?: boolean;
+  human?: boolean;
 };
 
 const nodes: Node[] = [
@@ -25,6 +26,7 @@ const nodes: Node[] = [
     detail: "Natural-language goals enter the system as structured intent.",
     x: 50,
     y: 7,
+    human: true,
   },
   {
     id: "orchestrator",
@@ -125,7 +127,7 @@ const edges: Array<[string, string]> = [
   ["api", "obs"],
 ];
 
-/** Conceptual interactive AI system graph — hero signature visual. */
+/** Conceptual interactive AI system graph — Neural Ivory architecture artifact. */
 export function HeroSystemGraph() {
   const reduce = useReducedMotion();
   const gradientId = useId();
@@ -187,24 +189,26 @@ export function HeroSystemGraph() {
 
   return (
     <div
-      className="relative flex h-full min-h-[32rem] flex-col overflow-hidden rounded-[var(--radius-lg)] border border-border bg-surface/70 shadow-[var(--shadow-soft)] sm:min-h-[36rem] lg:min-h-full"
+      className="relative flex h-full min-h-[32rem] flex-col overflow-hidden rounded-[var(--radius-lg)] border border-[#D3D8DE] bg-canvas-soft shadow-[var(--shadow-graph)] sm:min-h-[36rem] lg:min-h-full"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3 sm:px-5">
+      <div className="flex items-center justify-between gap-3 border-b border-[#D3D8DE]/80 px-4 py-3 sm:px-5">
         <div className="flex items-center gap-2.5">
           <BrandSignature size="sm" />
           <div>
-            <p className="mono-label !text-[10px] text-foreground/80">TZ Systems Graph</p>
-            <p className="mt-0.5 font-mono text-[10px] text-muted">Conceptual production topology</p>
+            <p className="mono-label !text-[10px] !text-system-navy">TZ Systems Graph</p>
+            <p className="mt-0.5 font-mono text-[10px] text-ink-muted">
+              Conceptual production topology
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <span className="hidden font-mono text-[10px] uppercase tracking-wider text-muted sm:inline">
+          <span className="hidden font-mono text-[10px] uppercase tracking-wider text-ink-muted sm:inline">
             {String(activeIndex + 1).padStart(2, "0")} / {String(nodes.length).padStart(2, "0")}
           </span>
-          <span className="inline-flex items-center gap-1.5 rounded-md border border-accent/30 bg-accent-soft px-2 py-1 font-mono text-[10px] uppercase tracking-wider text-accent-secondary">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent-secondary motion-safe:animate-pulse" />
+          <span className="inline-flex items-center gap-1.5 rounded-md border border-system-cyan/35 bg-white px-2 py-1 font-mono text-[10px] uppercase tracking-wider text-system-cyan">
+            <span className="h-1.5 w-1.5 rounded-full bg-system-cyan motion-safe:animate-pulse" />
             Live
           </span>
         </div>
@@ -220,21 +224,21 @@ export function HeroSystemGraph() {
             className={cn(
               "focus-ring flex items-start justify-between gap-3 rounded-md border px-3 py-2.5 text-left transition-colors duration-200",
               active === node.id
-                ? "border-accent bg-accent-soft"
-                : "border-border bg-background/50",
+                ? "border-system-blue bg-white shadow-[var(--shadow-sm)]"
+                : "border-[#D3D8DE] bg-white",
             )}
           >
             <span>
-              <span className="block text-xs font-medium text-foreground">{node.label}</span>
-              <span className="mt-1 block text-[11px] text-muted">{node.detail}</span>
+              <span className="block text-xs font-medium text-ink">{node.label}</span>
+              <span className="mt-1 block text-[11px] text-ink-muted">{node.detail}</span>
             </span>
-            <span className="shrink-0 font-mono text-[10px] text-accent-secondary">{node.meta}</span>
+            <span className="shrink-0 font-mono text-[10px] text-system-cyan">{node.meta}</span>
           </button>
         ))}
       </div>
 
       {/* Desktop topology */}
-      <div className="relative hidden flex-1 md:block">
+      <div className="relative hidden flex-1 bg-canvas-soft md:block">
         <svg
           viewBox="0 0 100 100"
           className="absolute inset-0 h-full w-full"
@@ -243,9 +247,12 @@ export function HeroSystemGraph() {
         >
           <defs>
             <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.9" />
-              <stop offset="100%" stopColor="var(--accent-secondary)" stopOpacity="0.9" />
+              <stop offset="0%" stopColor="var(--system-blue)" stopOpacity="0.95" />
+              <stop offset="100%" stopColor="var(--system-cyan)" stopOpacity="0.95" />
             </linearGradient>
+            <filter id={`${gradientId}-shadow`} x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="0.4" stdDeviation="0.6" floodColor="rgba(23,63,95,0.12)" />
+            </filter>
           </defs>
 
           {edges.map(([from, to]) => {
@@ -259,7 +266,7 @@ export function HeroSystemGraph() {
                   y1={a.y}
                   x2={b.x}
                   y2={b.y}
-                  stroke={lit ? `url(#${gradientId})` : "rgba(148,173,204,0.18)"}
+                  stroke={lit ? `url(#${gradientId})` : "rgba(23,63,95,0.14)"}
                   strokeWidth={lit ? 0.55 : 0.28}
                   className="transition-[stroke-width] duration-300"
                 />
@@ -269,11 +276,11 @@ export function HeroSystemGraph() {
                     y1={a.y}
                     x2={b.x}
                     y2={b.y}
-                    stroke="var(--accent-secondary)"
+                    stroke="var(--system-cyan)"
                     strokeWidth="0.35"
                     strokeDasharray="1.2 2.4"
                     className="tz-flow-dash"
-                    opacity="0.85"
+                    opacity="0.9"
                   />
                 ) : null}
               </g>
@@ -285,6 +292,29 @@ export function HeroSystemGraph() {
             const isActive = active === node.id;
             const w = node.hub ? 22 : 17;
             const h = node.hub ? 9 : 7.2;
+
+            let fill = "#FFFFFF";
+            let stroke = "#D3D8DE";
+            let labelFill = "var(--ink)";
+            let metaFill = "var(--system-cyan)";
+
+            if (node.hub) {
+              fill = "var(--system-navy)";
+              stroke = isActive ? "var(--system-blue)" : "var(--system-navy)";
+              labelFill = "var(--breakout-text)";
+              metaFill = "var(--system-cyan-soft)";
+            } else if (node.human && isActive) {
+              fill = "#FFFFFF";
+              stroke = "var(--signal)";
+              metaFill = "var(--signal-strong)";
+            } else if (isActive) {
+              fill = "#FFFFFF";
+              stroke = "var(--system-blue)";
+              metaFill = "var(--system-cyan)";
+            } else if (lit) {
+              stroke = "rgba(45,108,223,0.45)";
+            }
+
             return (
               <g
                 key={node.id}
@@ -296,6 +326,7 @@ export function HeroSystemGraph() {
                 role="button"
                 aria-pressed={isActive}
                 aria-label={`${node.label}: ${node.meta}. ${node.detail}`}
+                filter={isActive || node.hub ? `url(#${gradientId}-shadow)` : undefined}
               >
                 {isActive ? (
                   <rect
@@ -305,8 +336,8 @@ export function HeroSystemGraph() {
                     height={h + 2.4}
                     rx="1.6"
                     fill="none"
-                    stroke="var(--accent-secondary)"
-                    strokeOpacity="0.35"
+                    stroke={node.human ? "var(--signal)" : "var(--system-cyan)"}
+                    strokeOpacity="0.45"
                     strokeWidth="0.3"
                   />
                 ) : null}
@@ -316,25 +347,19 @@ export function HeroSystemGraph() {
                   width={w}
                   height={h}
                   rx="1.3"
-                  fill={isActive ? "rgba(59,130,246,0.22)" : "rgba(10,16,26,0.94)"}
-                  stroke={
-                    isActive
-                      ? "var(--accent)"
-                      : lit
-                        ? "rgba(148,173,204,0.4)"
-                        : "rgba(148,173,204,0.12)"
-                  }
-                  strokeWidth={node.hub ? 0.45 : 0.32}
+                  fill={fill}
+                  stroke={stroke}
+                  strokeWidth={node.hub ? 0.45 : isActive ? 0.42 : 0.32}
                   className="transition-[fill,stroke] duration-300"
                 />
                 <text
                   x={node.x}
                   y={node.y - 0.35}
                   textAnchor="middle"
-                  fill="var(--foreground)"
+                  fill={labelFill}
                   fontSize={node.hub ? 2.05 : 1.65}
                   fontFamily="var(--font-mono)"
-                  opacity={lit ? 1 : 0.32}
+                  opacity={lit ? 1 : 0.38}
                   className="transition-opacity duration-300"
                 >
                   {node.short}
@@ -343,10 +368,10 @@ export function HeroSystemGraph() {
                   x={node.x}
                   y={node.y + 2.1}
                   textAnchor="middle"
-                  fill="var(--accent-secondary)"
+                  fill={metaFill}
                   fontSize="1.2"
                   fontFamily="var(--font-mono)"
-                  opacity={lit ? 0.9 : 0.2}
+                  opacity={lit ? 0.95 : 0.28}
                 >
                   {node.meta}
                 </text>
@@ -357,17 +382,17 @@ export function HeroSystemGraph() {
       </div>
 
       {/* Inspector strip — technical storytelling */}
-      <div className="mt-auto border-t border-border bg-background/40 px-4 py-3.5 sm:px-5">
+      <div className="mt-auto border-t border-[#D3D8DE]/80 bg-white/70 px-4 py-3.5 sm:px-5">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <span className="text-sm font-medium tracking-tight text-foreground">
+          <span className="text-sm font-medium tracking-tight text-ink">
             {activeNode.label}
           </span>
-          <span className="font-mono text-[11px] text-accent-secondary">{activeNode.meta}</span>
+          <span className="font-mono text-[11px] text-system-cyan">{activeNode.meta}</span>
         </div>
-        <p className="mt-1.5 max-w-xl text-xs leading-relaxed text-muted sm:text-[13px]">
+        <p className="mt-1.5 max-w-xl text-xs leading-relaxed text-ink-secondary sm:text-[13px]">
           {activeNode.detail}
         </p>
-        <p className="mono-label mt-3 !normal-case tracking-normal text-[10px]">
+        <p className="mono-label mt-3 !normal-case !tracking-normal !text-[10px] !text-ink-muted">
           Hover · tap · arrow keys — paths illuminate with the active node
         </p>
       </div>

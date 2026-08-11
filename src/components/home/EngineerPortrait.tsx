@@ -12,6 +12,7 @@ import {
 } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { SectionEnvironment } from "@/components/ui/SectionEnvironment";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { SignalLine } from "@/components/brand/SignalLine";
 import { siteConfig } from "@/data/site";
@@ -20,8 +21,8 @@ import { motionTiers } from "@/lib/motion";
 const PORTRAIT_SRC = "/images/talha-zain-portrait.webp";
 
 /**
- * Editorial brand portrait — the human signal inside the system.
- * Cool system light around the frame; amber only on identity markers.
+ * Editorial brand portrait — warm cinematic dark environment.
+ * Natural portrait warmth is the contrast; amber only on identity markers.
  */
 export function EngineerPortrait() {
   const reduce = useReducedMotion();
@@ -35,29 +36,17 @@ export function EngineerPortrait() {
   const y = useSpring(rawY, { stiffness: 80, damping: 28, mass: 0.4 });
 
   return (
-    <section
+    <SectionEnvironment
       ref={sectionRef}
       id="engineer"
-      className="relative overflow-hidden border-y border-border/70 py-20 sm:py-24 lg:py-28"
+      tone="human"
+      className="py-24 sm:py-28 lg:py-32"
       aria-labelledby="engineer-heading"
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-60"
-        style={{
-          background:
-            "radial-gradient(ellipse 50% 55% at 18% 45%, rgba(59,130,246,0.10), transparent 58%), radial-gradient(ellipse 35% 40% at 88% 30%, rgba(103,232,249,0.05), transparent 50%)",
-        }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-y-0 left-0 hidden w-[48%] grid-overlay opacity-40 lg:block"
-      />
-
-      <Container>
-        <div className="grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14 xl:gap-16">
+      <Container width="wide">
+        <div className="grid items-center gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16 xl:gap-20">
           <motion.div
-            className="group relative mx-auto w-full max-w-md lg:mx-0 lg:max-w-none"
+            className="group relative mx-auto w-full max-w-lg lg:mx-0 lg:max-w-none"
             initial={reduce ? false : { opacity: 0, y: 20, scale: 0.985 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, amount: 0.35 }}
@@ -71,32 +60,31 @@ export function EngineerPortrait() {
                 src={PORTRAIT_SRC}
                 alt="Portrait of Talha Zain, Applied AI Engineer"
                 fill
-                sizes="(max-width: 1024px) 100vw, 42vw"
+                sizes="(max-width: 1024px) 100vw, 46vw"
                 quality={85}
                 className="object-cover object-[50%_18%] transition-[filter] duration-500 ease-out group-hover:brightness-[1.03]"
               />
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-background opacity-0 lg:opacity-90"
+                className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#090b11] opacity-0 lg:opacity-80"
               />
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-70 lg:opacity-50"
+                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#090b11] via-transparent to-transparent opacity-60 lg:opacity-40"
               />
-              {/* Cool system rim — no amber wash on the portrait */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                 style={{
-                  boxShadow: "inset -12px 0 28px -18px rgba(103,232,249,0.35)",
+                  boxShadow: "inset -12px 0 28px -18px rgba(103,232,249,0.28)",
                 }}
               />
             </motion.div>
           </motion.div>
 
-          <div className="relative z-10 max-w-xl">
+          <div className="relative z-10 max-w-xl lg:pl-2">
             <motion.div
-              className="mb-4 flex flex-wrap items-center gap-3"
+              className="mb-5 flex flex-wrap items-center gap-3"
               initial={reduce ? false : { opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.5 }}
@@ -108,7 +96,7 @@ export function EngineerPortrait() {
 
             <motion.h2
               id="engineer-heading"
-              className="section-display text-balance text-foreground"
+              className="section-display text-balance text-heading"
               initial={reduce ? false : { opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.5 }}
@@ -120,7 +108,7 @@ export function EngineerPortrait() {
             </motion.h2>
 
             <motion.p
-              className="mt-5 max-w-md text-base leading-relaxed text-muted sm:text-lg"
+              className="mt-6 max-w-md text-base leading-relaxed text-muted sm:text-lg"
               initial={reduce ? false : { opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.5 }}
@@ -132,7 +120,7 @@ export function EngineerPortrait() {
             </motion.p>
 
             <motion.dl
-              className="mt-8 grid gap-4 sm:grid-cols-2"
+              className="mt-10 grid gap-5 sm:grid-cols-2"
               initial={reduce ? false : { opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.5 }}
@@ -158,7 +146,7 @@ export function EngineerPortrait() {
             </motion.dl>
 
             <motion.div
-              className="mt-9"
+              className="mt-10"
               initial={reduce ? false : { opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.5 }}
@@ -175,6 +163,6 @@ export function EngineerPortrait() {
           </div>
         </div>
       </Container>
-    </section>
+    </SectionEnvironment>
   );
 }
