@@ -39,13 +39,39 @@ Value:
 TTL:
 ```
 
-Typical Vercel pattern (confirm in dashboard before applying):
+### Exact records from Vercel (`vercel domains verify`) — 2026-08-10
 
-| Purpose | Usual type | Host |
-|---------|------------|------|
-| Apex | A (or ALIAS/ANAME if shown) | `@` |
-| WWW | CNAME | `www` |
-| Verification | TXT | as shown by Vercel |
+Keep Spaceship nameservers (`launch1.spaceship.net` / `launch2.spaceship.net`). Do **not** switch to Vercel nameservers unless you intentionally want Vercel DNS.
+
+**Apex — talhazain.com**
+
+```text
+Type: A
+Host: @
+Value: 216.198.79.1
+TTL: Auto (or 3600)
+
+Type: A
+Host: @
+Value: 64.29.17.1
+TTL: Auto (or 3600)
+```
+
+**WWW — www.talhazain.com**
+
+```text
+Type: CNAME
+Host: www
+Value: 170725976b6f4359.vercel-dns-017.com.
+TTL: Auto (or 3600)
+```
+
+Notes from Vercel verify at add-time:
+
+- Current nameservers: `launch1.spaceship.net`, `launch2.spaceship.net`
+- No existing A/CNAME website records detected
+- No TXT verification challenges were required
+- Re-check after DNS propagation: `npx vercel domains verify talhazain.com`
 
 ## Environment
 
