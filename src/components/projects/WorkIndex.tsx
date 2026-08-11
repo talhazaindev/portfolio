@@ -103,10 +103,17 @@ export function WorkIndex({ featured, archive }: WorkIndexProps) {
                         </div>
                       ) : null}
                       <div>
-                        <div className="mono-label mb-2">
-                          {project.categories.join(" · ")} / {project.domains.join(" · ")}
+                        <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+                          <span className="font-mono text-sm tracking-[0.08em] text-signal">
+                            {String(
+                              featured.findIndex((p) => p.slug === project.slug) + 1,
+                            ).padStart(2, "0")}
+                          </span>
+                          <span className="mono-label">
+                            {project.categories.join(" · ")} / {project.domains.join(" · ")}
+                          </span>
                         </div>
-                        <h3 className="text-2xl tracking-tight">{project.name}</h3>
+                        <h3 className="text-2xl tracking-tight text-foreground">{project.name}</h3>
                         <p className="mt-2 max-w-2xl text-sm text-muted">{project.summary}</p>
                         <div className="mt-4 flex flex-wrap gap-2">
                           {project.metrics.slice(0, 3).map((metric) => (

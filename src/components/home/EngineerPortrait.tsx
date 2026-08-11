@@ -12,14 +12,16 @@ import {
 } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { MetaLabel } from "@/components/brand/MetaLabel";
+import { SignalLine } from "@/components/brand/SignalLine";
 import { siteConfig } from "@/data/site";
 import { motionTiers } from "@/lib/motion";
 
 const PORTRAIT_SRC = "/images/talha-zain-portrait.webp";
 
 /**
- * Editorial brand portrait — human presence without a generic “about me” card.
- * Soft fade into the observatory background; restrained parallax only.
+ * Editorial brand portrait — the human signal inside the system.
+ * Cool system light around the frame; amber only on identity markers.
  */
 export function EngineerPortrait() {
   const reduce = useReducedMotion();
@@ -73,7 +75,6 @@ export function EngineerPortrait() {
                 quality={85}
                 className="object-cover object-[50%_18%] transition-[filter] duration-500 ease-out group-hover:brightness-[1.03]"
               />
-              {/* Soft fade into background — right & bottom edges */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-background opacity-0 lg:opacity-90"
@@ -82,7 +83,7 @@ export function EngineerPortrait() {
                 aria-hidden
                 className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-70 lg:opacity-50"
               />
-              {/* Subtle cyan rim intensifies on hover */}
+              {/* Cool system rim — no amber wash on the portrait */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
@@ -94,15 +95,16 @@ export function EngineerPortrait() {
           </motion.div>
 
           <div className="relative z-10 max-w-xl">
-            <motion.p
-              className="mono-label mb-4"
+            <motion.div
+              className="mb-4 flex flex-wrap items-center gap-3"
               initial={reduce ? false : { opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.5 }}
               transition={motionTiers.interface}
             >
-              The engineer behind the systems
-            </motion.p>
+              <MetaLabel keyword="SIGNAL" value="01" signal />
+              <SignalLine compact />
+            </motion.div>
 
             <motion.h2
               id="engineer-heading"
@@ -112,9 +114,9 @@ export function EngineerPortrait() {
               viewport={{ once: true, amount: 0.5 }}
               transition={{ ...motionTiers.cinematic, delay: reduce ? 0 : 0.06 }}
             >
-              I build the system
+              The engineer
               <br />
-              around the model.
+              behind the systems
             </motion.h2>
 
             <motion.p

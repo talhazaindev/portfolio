@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useSyncExternalStore } from "react";
 import {
   motion,
   useReducedMotion,
@@ -21,57 +21,32 @@ const STAGES = [
   { id: "prod", label: "PRODUCTION" },
 ] as const;
 
+function subscribeDesktop(onStoreChange: () => void) {
+  const mq = window.matchMedia("(min-width: 768px)");
+  mq.addEventListener("change", onStoreChange);
+  return () => mq.removeEventListener("change", onStoreChange);
+}
+
+function getDesktopSnapshot() {
+  return window.matchMedia("(min-width: 768px)").matches;
+}
+
+function getServerDesktopSnapshot() {
+  return false;
+}
+
 /**
  * Single signature scroll moment: model capability → production system.
- * ~1.4 viewports on desktop; static list on mobile / reduced motion. No scroll-jacking.
+ * One heading in the DOM; list mode switches to avoid duplicate SEO content.
  */
 export function ProductionAssembly() {
   const reduce = useReducedMotion();
-
-  return (
-    <>
-      {/* Mobile + reduced motion: static editorial list */}
-      <section
-        id="assembly"
-        className={cn(
-          "relative border-y border-border/50 bg-background-elevated/20 py-20 sm:py-24",
-          reduce ? "block" : "md:hidden",
-        )}
-        aria-labelledby="assembly-heading-static"
-      >
-        <Container>
-          <p className="mono-label mb-4">Signature path</p>
-          <h2 id="assembly-heading-static" className="section-display max-w-2xl text-balance">
-            From model capability to production system.
-          </h2>
-          <ol className="mt-10 flex flex-col gap-3 sm:max-w-md">
-            {STAGES.map((stage, index) => (
-              <li
-                key={stage.id}
-                className={cn(
-                  "rounded-md border px-4 py-3 font-mono text-xs tracking-wider",
-                  index === STAGES.length - 1
-                    ? "border-accent bg-accent-soft text-foreground"
-                    : "border-border text-muted",
-                )}
-              >
-                <span className="mr-3 text-muted">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                {stage.label}
-              </li>
-            ))}
-          </ol>
-        </Container>
-      </section>
-
-      {/* Desktop scrub — only when motion is allowed */}
-      {!reduce ? <DesktopScrubAssembly /> : null}
-    </>
+  const isDesktop = useSyncExternalStore(
+    subscribeDesktop,
+    getDesktopSnapshot,
+    getServerDesktopSnapshot,
   );
-}
-
-function DesktopScrubAssembly() {
+  const scrub = Boolean(isDesktop && !reduce);
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -81,39 +56,83 @@ function DesktopScrubAssembly() {
   return (
     <section
       ref={sectionRef}
-      className="relative hidden h-[140vh] border-y border-border/50 bg-background-elevated/20 md:block"
+      id="assembly"
+      className={cn(
+        "relative border-y border-border/50 bg-background-elevated/20",
+        scrub ? "h-[140vh]" : "py-20 sm:py-24",
+      )}
       aria-labelledby="assembly-heading"
     >
-      <div className="sticky top-0 flex h-[100dvh] items-center overflow-hidden">
-        <Container className="relative z-10 w-full">
-          <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.1fr]">
-            <div>
-              <p className="mono-label mb-4">Signature path</p>
-              <h2 id="assembly-heading" className="section-display max-w-md text-balance">
-                From model capability
-                <br />
-                to production system.
-              </h2>
-              <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">
-                Capability alone is not a product. The surrounding system is.
-              </p>
+      {scrub ? (
+        <div className="sticky top-0 flex h-[100dvh] items-center overflow-hidden">
+          <Container className="relative z-10 w-full">
+            <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.1fr]">
+              <AssemblyHeader />
+              <ol className="relative space-y-2">
+                {STAGES.map((stage, index) => (
+                  <AssemblyStage
+                    key={stage.id}
+                    label={stage.label}
+                    index={index}
+                    progress={scrollYProgress}
+                    total={STAGES.length}
+                  />
+                ))}
+              </ol>
             </div>
-
-            <ol className="relative space-y-2">
-              {STAGES.map((stage, index) => (
-                <AssemblyStage
+          </Container>
+        </div>
+      ) : (
+        <Container>
+          <AssemblyHeader />
+          <ol className="mt-10 flex flex-col gap-3 sm:max-w-md">
+            {STAGES.map((stage, index) => {
+              const isLast = index === STAGES.length - 1;
+              return (
+                <li
                   key={stage.id}
-                  label={stage.label}
-                  index={index}
-                  progress={scrollYProgress}
-                  total={STAGES.length}
-                />
-              ))}
-            </ol>
-          </div>
+                  className={cn(
+                    "flex items-center gap-3 rounded-md border px-4 py-3 font-mono text-xs tracking-wider",
+                    isLast
+                      ? "border-signal/45 bg-signal-08 text-foreground"
+                      : "border-border text-muted",
+                  )}
+                >
+                  <span className={cn(isLast ? "text-signal" : "text-muted")}>
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span>{stage.label}</span>
+                  {isLast ? (
+                    <span className="ml-auto inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-signal">
+                      <span className="h-1.5 w-1.5 rounded-full bg-signal" aria-hidden />
+                      Signal
+                    </span>
+                  ) : (
+                    <span className="ml-auto text-system-cyan/50" aria-hidden>
+                      ↓
+                    </span>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
         </Container>
-      </div>
+      )}
     </section>
+  );
+}
+
+function AssemblyHeader() {
+  return (
+    <div>
+      <p className="mono-label mb-4">Signature path</p>
+      <h2 id="assembly-heading" className="section-display max-w-2xl text-balance">
+        From model capability to production system.
+      </h2>
+      <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">
+        Capability alone is not a product. The surrounding system is.
+      </p>
+    </div>
   );
 }
 
@@ -139,17 +158,20 @@ function AssemblyStage({
       style={{ opacity, x }}
       className={cn(
         "flex items-center gap-3 rounded-md border bg-surface/40 px-4 py-3 font-mono text-xs tracking-wider",
-        isLast ? "border-accent text-foreground" : "border-border text-foreground/90",
+        isLast ? "border-signal/45 text-foreground" : "border-border text-foreground/90",
       )}
     >
-      <span className="text-muted">{String(index + 1).padStart(2, "0")}</span>
+      <span className={cn(isLast ? "text-signal" : "text-muted")}>
+        {String(index + 1).padStart(2, "0")}
+      </span>
       <span>{label}</span>
       {isLast ? (
-        <span className="ml-auto font-mono text-[10px] uppercase tracking-wider text-accent-secondary">
+        <span className="ml-auto inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-signal">
+          <span className="h-1.5 w-1.5 rounded-full bg-signal" aria-hidden />
           Production AI
         </span>
       ) : (
-        <span className="ml-auto text-muted" aria-hidden>
+        <span className="ml-auto text-system-cyan/60" aria-hidden>
           ↓
         </span>
       )}

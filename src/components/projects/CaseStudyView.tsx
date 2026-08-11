@@ -164,26 +164,49 @@ export function CaseStudyView({ project, next }: CaseStudyViewProps) {
           </section>
         ) : null}
 
-        {/* Outcomes — large typography */}
+        {/* Outcomes — amber only on key result metrics */}
         <section className="mt-16 border-y border-border/70 py-12">
-          <h2 className="mono-label mb-8">Outcomes</h2>
+          <h2 className="mono-label mb-8">
+            <span className="text-signal">Outcome</span>
+            <span className="text-muted"> / </span>
+            <span className="text-foreground/80">Results</span>
+          </h2>
           {project.metrics.length ? (
             <div className="mb-10 grid grid-cols-2 gap-6 sm:grid-cols-4">
-              {project.metrics.map((metric) => (
-                <div key={`${metric.value}-${metric.label}`}>
-                  <div className="font-mono text-3xl tracking-tight text-foreground sm:text-4xl">
-                    {metric.value}
+              {project.metrics.map((metric) => {
+                const emphasize = /response|eliminated|manual|hrs\/week|< 5s|3–4/i.test(
+                  `${metric.value} ${metric.label}`,
+                );
+                return (
+                  <div key={`${metric.value}-${metric.label}`}>
+                    <div
+                      className={`font-mono text-3xl tracking-tight sm:text-4xl ${
+                        emphasize ? "text-signal" : "text-foreground"
+                      }`}
+                    >
+                      {metric.value}
+                    </div>
+                    <div className="mt-2 text-sm uppercase tracking-wider text-muted">
+                      {metric.label}
+                    </div>
+                    {emphasize ? (
+                      <span className="mt-3 block h-px w-8 bg-signal/70" aria-hidden />
+                    ) : null}
                   </div>
-                  <div className="mt-2 text-sm uppercase tracking-wider text-muted">
-                    {metric.label}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           ) : null}
           <ul className="max-w-3xl space-y-4">
-            {project.outcomes.map((outcome) => (
-              <li key={outcome} className="border-l-2 border-accent/50 pl-4 text-sm text-muted sm:text-base">
+            {project.outcomes.map((outcome, outcomeIndex) => (
+              <li
+                key={outcome}
+                className={`border-l-2 pl-4 text-sm sm:text-base ${
+                  outcomeIndex === 0
+                    ? "border-signal/60 text-foreground/90"
+                    : "border-accent/50 text-muted"
+                }`}
+              >
                 {outcome}
               </li>
             ))}
@@ -296,7 +319,9 @@ function DecisionModule({ decision }: { decision: EngineeringDecision }) {
         </div>
         {decision.result ? (
           <div>
-            <p className="mono-label mb-1.5">Result</p>
+            <p className="mono-label mb-1.5">
+              <span className="text-signal">Result</span>
+            </p>
             <p className="text-sm leading-relaxed text-foreground/90">{decision.result}</p>
           </div>
         ) : null}

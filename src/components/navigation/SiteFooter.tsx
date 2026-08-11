@@ -1,15 +1,22 @@
 import Link from "next/link";
 import { LogoMark } from "@/components/brand/LogoMark";
+import { SignalLine } from "@/components/brand/SignalLine";
 import { Container } from "@/components/ui/Container";
 import { social } from "@/data/social";
 import { siteConfig } from "@/data/site";
 
-/** Closing brand strip — no emoji, no generic “made with”. */
+/** Closing brand strip — system online → signal. */
 export function SiteFooter() {
   return (
     <footer className="border-t border-border py-12">
       <Container className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
         <div>
+          <div className="mb-5 flex items-center gap-3">
+            <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
+              System online
+            </span>
+            <SignalLine />
+          </div>
           <LogoMark showWordmark size="lg" />
           <p className="mt-4 max-w-sm text-sm text-muted">
             Designed as a living record of systems shipped.

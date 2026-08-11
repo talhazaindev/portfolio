@@ -4,10 +4,17 @@ type StatusLabelProps = {
   label: string;
   value: string;
   className?: string;
+  /** One-shot pulse on mount — never a permanent loop. */
+  pulseOnce?: boolean;
 };
 
-/** Sparse system-status brand detail. */
-export function StatusLabel({ label, value, className }: StatusLabelProps) {
+/** Sparse system-status brand detail — amber node = production signal. */
+export function StatusLabel({
+  label,
+  value,
+  className,
+  pulseOnce = false,
+}: StatusLabelProps) {
   return (
     <span
       className={cn(
@@ -15,10 +22,13 @@ export function StatusLabel({ label, value, className }: StatusLabelProps) {
         className,
       )}
     >
-      <span className="relative flex h-1.5 w-1.5">
-        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-secondary opacity-40 motion-reduce:animate-none" />
-        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent-secondary" />
-      </span>
+      <span
+        className={cn(
+          "relative inline-flex h-1.5 w-1.5 rounded-full bg-signal shadow-[0_0_6px_rgba(255,181,71,0.4)]",
+          pulseOnce && "tz-signal-pulse-once",
+        )}
+        aria-hidden
+      />
       <span>
         {label} / <span className="text-foreground/80">{value}</span>
       </span>

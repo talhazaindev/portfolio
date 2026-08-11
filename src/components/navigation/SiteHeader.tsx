@@ -31,7 +31,7 @@ function isNavActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-/** Floating command-deck navigation — Intelligent Systems chrome. */
+/** Floating command-deck navigation — Brand System V2 chrome. */
 export function SiteHeader() {
   const pathname = usePathname();
   const reduce = useReducedMotion();
@@ -42,7 +42,7 @@ export function SiteHeader() {
   const open = menuOpen && openedAtPath === pathname;
 
   useEffect(() => {
-    const onScroll = () => setCompact(window.scrollY > 36);
+    const onScroll = () => setCompact(window.scrollY > 72);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -81,22 +81,23 @@ export function SiteHeader() {
         <div className="pointer-events-auto mx-auto max-w-[1220px] px-3 sm:px-4 lg:px-5">
           <div
             className={cn(
-              "relative overflow-hidden rounded-[16px] border border-border/80",
-              "bg-[color-mix(in_oklab,var(--background-elevated)_84%,transparent)]",
-              "shadow-[0_0_0_1px_rgba(148,173,204,0.04),0_12px_40px_rgba(0,0,0,0.38)]",
-              "backdrop-blur-md backdrop-saturate-125",
+              "relative overflow-hidden rounded-[16px]",
+              "border border-[rgba(148,163,184,0.12)]",
+              "bg-[rgba(8,16,32,0.78)]",
+              "shadow-[0_0_0_1px_rgba(148,163,184,0.04),0_10px_32px_rgba(0,0,0,0.32)]",
+              "backdrop-blur-[16px] backdrop-saturate-125",
               "transition-[margin,padding,box-shadow] duration-300 ease-out",
               compact
-                ? "mt-2 shadow-[0_0_0_1px_rgba(148,173,204,0.06),0_10px_28px_rgba(0,0,0,0.45)]"
+                ? "mt-2 shadow-[0_0_0_1px_rgba(148,163,184,0.06),0_8px_24px_rgba(0,0,0,0.42)]"
                 : "mt-3 sm:mt-4",
             )}
           >
-            {/* Subtle system rail */}
+            {/* Faint system rail — active node is amber signal */}
             <div
               aria-hidden
               className="pointer-events-none absolute inset-x-4 top-[1px] flex h-px items-center sm:inset-x-6"
             >
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-border/40" />
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-system-cyan/25 to-system-cyan/40" />
               <div className="mx-3 flex w-40 items-center justify-between sm:mx-5 sm:w-52">
                 {primaryNav.map((item, index) => {
                   const active = index === activeIndex;
@@ -106,14 +107,14 @@ export function SiteHeader() {
                       className={cn(
                         "block h-[3px] w-[3px] rounded-full transition-[background-color,box-shadow] duration-300",
                         active
-                          ? "bg-accent-secondary shadow-[0_0_8px_rgba(103,232,249,0.55)]"
-                          : "bg-[rgba(148,173,204,0.35)]",
+                          ? "bg-signal shadow-[0_0_8px_rgba(255,181,71,0.55)]"
+                          : "bg-[rgba(148,163,184,0.28)]",
                       )}
                     />
                   );
                 })}
               </div>
-              <div className="h-px flex-1 bg-gradient-to-l from-transparent via-border to-border/40" />
+              <div className="h-px flex-1 bg-gradient-to-l from-transparent via-system-cyan/25 to-system-cyan/40" />
             </div>
 
             <div
@@ -130,16 +131,22 @@ export function SiteHeader() {
                 <Image
                   src="/logo.png"
                   alt=""
-                  width={28}
-                  height={28}
+                  width={32}
+                  height={32}
                   priority
-                  className="h-7 w-7 rounded-[7px] object-cover"
+                  className="h-8 w-8 rounded-[8px] object-cover"
                 />
                 <span className="flex min-w-0 flex-col leading-none">
                   <span className="truncate text-[13px] font-semibold tracking-tight text-foreground sm:text-sm">
                     Talha Zain
                   </span>
-                  <span className="mt-1 hidden font-mono text-[9px] uppercase tracking-[0.16em] text-muted sm:block">
+                  <span
+                    className={cn(
+                      "mt-1 hidden font-mono text-[9px] uppercase tracking-[0.16em] text-muted sm:block",
+                      "transition-opacity duration-300",
+                      compact && "opacity-0 sm:h-0 sm:overflow-hidden sm:opacity-0",
+                    )}
+                  >
                     Applied AI
                   </span>
                 </span>
@@ -168,8 +175,8 @@ export function SiteHeader() {
                           transition={motionTiers.functional}
                           aria-hidden
                         >
-                          <span className="h-px w-full max-w-[2rem] bg-gradient-to-r from-transparent via-accent-secondary/70 to-transparent" />
-                          <span className="absolute bottom-0 left-1/2 h-[5px] w-[5px] -translate-x-1/2 translate-y-[3px] rounded-full bg-accent-secondary shadow-[0_0_10px_rgba(103,232,249,0.45)]" />
+                          <span className="h-px w-full max-w-[2rem] bg-gradient-to-r from-transparent via-system-cyan/70 to-transparent" />
+                          <span className="absolute bottom-0 left-1/2 h-[5px] w-[5px] -translate-x-1/2 translate-y-[3px] rounded-full bg-signal shadow-[0_0_10px_rgba(255,181,71,0.5)]" />
                         </motion.span>
                       ) : null}
                       {item.label}
@@ -179,23 +186,27 @@ export function SiteHeader() {
               </nav>
 
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <span
-                  className="hidden h-1.5 w-1.5 rounded-full bg-accent-secondary lg:inline-block xl:hidden"
-                  title="Mode / Production"
-                  aria-label="Mode Production"
-                />
                 <span className="mr-1 hidden items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted xl:inline-flex">
                   <span
                     className={cn(
-                      "h-1.5 w-1.5 rounded-full bg-accent-secondary",
-                      !reduce && "shadow-[0_0_6px_rgba(103,232,249,0.5)]",
+                      "h-1.5 w-1.5 rounded-full bg-signal shadow-[0_0_6px_rgba(255,181,71,0.45)]",
+                      !reduce && "tz-signal-pulse-once",
                     )}
                     aria-hidden
                   />
                   <span>
-                    Mode / <span className="text-foreground/85">Production</span>
+                    <span className="sr-only">Mode </span>
+                    Production
                   </span>
                 </span>
+                <span
+                  className={cn(
+                    "hidden h-1.5 w-1.5 rounded-full bg-signal lg:inline-block xl:hidden",
+                    !reduce && "tz-signal-pulse-once",
+                  )}
+                  title="Mode / Production"
+                  aria-label="Mode Production"
+                />
 
                 <button
                   type="button"
@@ -214,11 +225,14 @@ export function SiteHeader() {
                     href={social.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="focus-ring hidden items-center gap-1 rounded-md px-2 py-1.5 text-[13px] text-muted transition-colors duration-180 hover:text-foreground lg:inline-flex"
+                    className="focus-ring group/gh hidden items-center gap-1 rounded-md px-2 py-1.5 text-[13px] text-muted transition-colors duration-180 hover:text-foreground lg:inline-flex"
                     onClick={() => track(AnalyticsEvents.githubClick, { source: "nav" })}
                   >
                     GitHub
-                    <ArrowUpRight className="h-3 w-3 opacity-70" aria-hidden />
+                    <ArrowUpRight
+                      className="h-3 w-3 opacity-70 transition-transform duration-200 group-hover/gh:translate-x-0.5 group-hover/gh:-translate-y-0.5"
+                      aria-hidden
+                    />
                   </a>
                 ) : null}
 
@@ -227,15 +241,19 @@ export function SiteHeader() {
                   className={cn(
                     "focus-ring group/cta relative hidden overflow-hidden rounded-md border border-border-strong",
                     "bg-transparent px-3.5 py-2 text-[13px] font-medium text-foreground",
-                    "transition-[background-color,border-color,color,transform] duration-200 ease-out",
-                    "hover:border-accent hover:bg-accent hover:text-white",
-                    "active:scale-[0.98] lg:inline-flex lg:items-center lg:gap-1.5",
+                    "transition-[background-color,border-color,color] duration-200 ease-out",
+                    "hover:border-system-blue-strong hover:bg-system-blue-strong/90 hover:text-white",
+                    "lg:inline-flex lg:items-center lg:gap-1.5",
                   )}
                 >
                   Let&apos;s Talk
                   <ArrowUpRight
                     className="h-3.5 w-3.5 opacity-80 transition-transform duration-200 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5"
                     aria-hidden
+                  />
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute bottom-1.5 right-1.5 h-1 w-1 rounded-full bg-signal opacity-0 transition-opacity duration-200 group-hover/cta:opacity-100"
                   />
                 </Link>
 
@@ -288,7 +306,7 @@ export function SiteHeader() {
             animate={{ opacity: 1 }}
             exit={reduce ? undefined : { opacity: 0 }}
             transition={motionTiers.interface}
-            className="fixed inset-0 z-40 flex flex-col bg-[#070b12]/97 px-5 pb-8 pt-24 backdrop-blur-md lg:hidden"
+            className="fixed inset-0 z-40 flex flex-col bg-[rgba(8,8,16,0.97)] px-5 pb-8 pt-6 backdrop-blur-md lg:hidden"
           >
             <motion.div
               initial={reduce ? false : { opacity: 0, y: 12 }}
@@ -297,20 +315,30 @@ export function SiteHeader() {
               transition={motionTiers.interface}
               className="mx-auto flex w-full max-w-lg flex-1 flex-col"
             >
-              <div className="mb-8 flex items-center justify-between border-b border-border/70 pb-4">
-                <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent-secondary" aria-hidden />
-                  Mode / <span className="text-foreground/85">Production</span>
-                </span>
+              <div className="mb-10 flex items-center justify-between border-b border-border/70 pb-4">
+                <Link
+                  href="/"
+                  onClick={closeMenu}
+                  className="focus-ring flex items-center gap-2.5 rounded-md"
+                  aria-label="Talha Zain — Home"
+                >
+                  <Image
+                    src="/logo.png"
+                    alt=""
+                    width={28}
+                    height={28}
+                    className="h-7 w-7 rounded-[7px] object-cover"
+                  />
+                  <span className="text-[13px] font-semibold tracking-tight text-foreground">
+                    Talha Zain
+                  </span>
+                </Link>
                 <button
                   type="button"
                   className="focus-ring rounded-md border border-border px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted"
-                  onClick={() => {
-                    closeMenu();
-                    openCommandPalette();
-                  }}
+                  onClick={closeMenu}
                 >
-                  {isMac ? "⌘K" : "Ctrl K"}
+                  Close
                 </button>
               </div>
 
@@ -329,7 +357,12 @@ export function SiteHeader() {
                       )}
                     >
                       <span className="flex items-baseline gap-4">
-                        <span className="font-mono text-[11px] tracking-[0.14em] text-muted">
+                        <span
+                          className={cn(
+                            "font-mono text-[11px] tracking-[0.14em]",
+                            active ? "text-signal" : "text-muted",
+                          )}
+                        >
                           {String(index + 1).padStart(2, "0")}
                         </span>
                         <span className="text-[1.75rem] tracking-tight sm:text-[2rem]">
@@ -338,7 +371,7 @@ export function SiteHeader() {
                       </span>
                       {active ? (
                         <span
-                          className="h-1.5 w-1.5 rounded-full bg-accent-secondary shadow-[0_0_8px_rgba(103,232,249,0.5)]"
+                          className="h-1.5 w-1.5 rounded-full bg-signal shadow-[0_0_8px_rgba(255,181,71,0.5)]"
                           aria-hidden
                         />
                       ) : (
@@ -385,14 +418,26 @@ export function SiteHeader() {
                   href="/contact"
                   onClick={closeMenu}
                   className={cn(
-                    "focus-ring mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md border border-border-strong",
+                    "focus-ring group/mcta relative mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md border border-border-strong",
                     "bg-transparent px-4 py-3.5 text-sm font-medium text-foreground",
-                    "transition-colors duration-200 hover:border-accent hover:bg-accent hover:text-white",
+                    "transition-colors duration-200 hover:border-system-blue-strong hover:bg-system-blue-strong/90 hover:text-white",
                   )}
                 >
                   Let&apos;s Talk
                   <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+                  <span
+                    aria-hidden
+                    className="absolute bottom-2.5 right-3 h-1 w-1 rounded-full bg-signal opacity-70"
+                  />
                 </Link>
+
+                <p className="mt-8 flex items-center justify-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
+                  Mode /
+                  <span className="inline-flex items-center gap-1.5 text-foreground/85">
+                    <span className="h-1.5 w-1.5 rounded-full bg-signal" aria-hidden />
+                    Production
+                  </span>
+                </p>
               </div>
             </motion.div>
           </motion.div>

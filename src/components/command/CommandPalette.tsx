@@ -17,7 +17,7 @@ type Command = {
   run: () => void;
 };
 
-/** Keyboard command interface (Ctrl/⌘ K). */
+/** Keyboard command interface (Ctrl/⌘ K) — V2 signal cursor. */
 export function CommandPalette() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -116,7 +116,7 @@ export function CommandPalette() {
         id: "system-status",
         label: "system status",
         hint: "Brand",
-        keywords: "status focus agentic",
+        keywords: "status focus agentic signal",
         run: () => setSystemStatus(true),
       },
     ];
@@ -212,19 +212,28 @@ export function CommandPalette() {
         </div>
 
         {systemStatus ? (
-          <div className="space-y-4 p-5 text-sm">
+          <div className="space-y-5 p-5 font-mono text-xs tracking-wider">
             <div>
-              <p className="font-medium tracking-tight text-foreground">{siteConfig.name}</p>
-              <p className="mono-label mt-1">{siteConfig.role}</p>
+              <p className="text-sm font-medium tracking-tight text-foreground">{siteConfig.name}</p>
+              <p className="mt-1 text-[10px] uppercase text-muted">{siteConfig.role}</p>
             </div>
-            <div>
-              <p className="mono-label mb-2">Focus</p>
-              <ul className="space-y-1 text-muted">
-                {siteConfig.specialties.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
+            <dl className="space-y-2.5 uppercase text-muted">
+              <div className="grid grid-cols-[5.5rem_1fr] gap-3">
+                <dt>State</dt>
+                <dd className="inline-flex items-center gap-2 text-foreground">
+                  <span className="h-1.5 w-1.5 rounded-full bg-signal" aria-hidden />
+                  Production
+                </dd>
+              </div>
+              <div className="grid grid-cols-[5.5rem_1fr] gap-3">
+                <dt>Focus</dt>
+                <dd className="text-foreground">Agentic Systems</dd>
+              </div>
+              <div className="grid grid-cols-[5.5rem_1fr] gap-3">
+                <dt className="text-signal">Signal</dt>
+                <dd className="text-foreground">Active</dd>
+              </div>
+            </dl>
             <button
               type="button"
               className="focus-ring mt-2 text-accent-secondary"
@@ -247,7 +256,7 @@ export function CommandPalette() {
                     className={cn(
                       "flex w-full items-center justify-between rounded-md px-3 py-2.5 text-left text-sm transition-colors duration-150",
                       index === active
-                        ? "bg-accent-soft text-foreground"
+                        ? "bg-signal-08 text-foreground"
                         : "text-muted hover:bg-white/5 hover:text-foreground",
                     )}
                     onMouseEnter={() => setActive(index)}
@@ -256,7 +265,17 @@ export function CommandPalette() {
                       if (command.id !== "system-status") setOpen(false);
                     }}
                   >
-                    <span>{command.label}</span>
+                    <span className="inline-flex items-center gap-2.5">
+                      {index === active ? (
+                        <span
+                          className="h-1.5 w-1.5 shrink-0 rounded-full bg-signal shadow-[0_0_6px_rgba(255,181,71,0.45)]"
+                          aria-hidden
+                        />
+                      ) : (
+                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-transparent" aria-hidden />
+                      )}
+                      {command.label}
+                    </span>
                     {command.hint ? (
                       <span className="font-mono text-[10px] uppercase tracking-wider text-muted">
                         {command.hint}

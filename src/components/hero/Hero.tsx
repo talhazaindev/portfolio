@@ -42,7 +42,7 @@ export function Hero() {
               <p className="mono-label">
                 Applied AI Engineer · {siteConfig.location}
               </p>
-              <StatusLabel label="Mode" value="Production" />
+              <StatusLabel label="Mode" value="Production" pulseOnce />
             </motion.div>
 
             <motion.h1
