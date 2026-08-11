@@ -1,5 +1,6 @@
 import { Hero } from "@/components/hero/Hero";
 import { ProductionSignals } from "@/components/home/ProductionSignals";
+import { ProjectGallery } from "@/components/home/ProjectGallery";
 import { SelectedSystems } from "@/components/projects/SelectedSystems";
 import { CapabilitiesSection } from "@/components/capabilities/CapabilitiesSection";
 import { TrajectoryPreview } from "@/components/experience/TrajectoryPreview";
@@ -14,6 +15,7 @@ export default function HomePage() {
       <Hero />
       <ProductionSignals />
       <SelectedSystems />
+      <ProjectGallery />
       <CapabilitiesSection />
       <TrajectoryPreview />
       <HowIBuild />
