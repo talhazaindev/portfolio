@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowUpRight, Command } from "lucide-react";
+import { BrandSignature } from "@/components/brand/LogoMark";
 import { primaryNav } from "@/components/navigation/nav-config";
 import { social } from "@/data/social";
 import { AnalyticsEvents, track } from "@/lib/analytics";
@@ -127,27 +127,9 @@ export function SiteHeader() {
                 className="focus-ring flex min-w-0 shrink-0 items-center gap-2.5 rounded-md"
                 aria-label="Talha Zain — Home"
               >
-                <Image
-                  src="/logo.png"
-                  alt=""
-                  width={32}
-                  height={32}
-                  priority
-                  className="h-8 w-8 rounded-[8px] object-cover"
-                />
-                <span className="flex min-w-0 flex-col leading-none">
-                  <span className="truncate text-[13px] font-semibold tracking-tight text-ink-strong sm:text-sm">
-                    Talha Zain
-                  </span>
-                  <span
-                    className={cn(
-                      "mt-1 hidden font-mono text-[9px] uppercase tracking-[0.16em] text-ink-muted sm:block",
-                      "transition-opacity duration-300",
-                      compact && "opacity-0 sm:h-0 sm:overflow-hidden sm:opacity-0",
-                    )}
-                  >
-                    Applied AI
-                  </span>
+                <BrandSignature size="md" />
+                <span className="truncate text-[13px] font-semibold tracking-tight text-ink-strong sm:text-sm">
+                    Building Production Intelligence
                 </span>
               </Link>
 
@@ -323,15 +305,9 @@ export function SiteHeader() {
                   className="focus-ring flex items-center gap-2.5 rounded-md"
                   aria-label="Talha Zain — Home"
                 >
-                  <Image
-                    src="/logo.png"
-                    alt=""
-                    width={28}
-                    height={28}
-                    className="h-7 w-7 rounded-[7px] object-cover"
-                  />
+                  <BrandSignature size="md" />
                   <span className="text-[13px] font-semibold tracking-tight text-ink-strong">
-                    Talha Zain
+                    Beyond the Model
                   </span>
                 </Link>
                 <button

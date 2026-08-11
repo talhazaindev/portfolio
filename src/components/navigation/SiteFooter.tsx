@@ -17,7 +17,7 @@ export function SiteFooter() {
             </span>
             <SignalLine />
           </div>
-          <LogoMark showWordmark size="lg" />
+          <LogoMark size="lg" />
           <p className="mt-4 max-w-sm text-sm text-ink-secondary">
             Designed as a living record of systems shipped.
           </p>

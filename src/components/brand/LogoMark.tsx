@@ -4,21 +4,24 @@ import { cn } from "@/lib/cn";
 type BrandSignatureProps = {
   className?: string;
   size?: "sm" | "md" | "lg";
-  /** Kept for API compatibility — square TZ lockup already includes identity. */
+  /** Kept for API compatibility — logo2 lockup already includes name + title. */
   showWordmark?: boolean;
   compact?: boolean;
 };
 
-/** Square TZ logo sizes (1:1) — navbar stays compact at 24–32px. */
+/**
+ * Full TZ lockup sizes (`/logo2.png`).
+ * Image has large internal padding — sizes are generous and we zoom so the mark reads clearly.
+ */
 const sizes = {
-  sm: 28,
-  md: 32,
-  lg: 48,
+  sm: 48,
+  md: 64,
+  lg: 88,
 } as const;
 
 /**
- * Official Talha Zain logo (`/logo.png`) — square TZ systems mark.
- * Used in navigation, footer, favicon, and system chrome.
+ * Official Talha Zain logo (`/logo2.png`) — TZ mark + name lockup.
+ * Used in navigation, footer, and system chrome.
  */
 export function BrandSignature({
   className,
@@ -29,15 +32,19 @@ export function BrandSignature({
 
   return (
     <span className={cn("inline-flex items-center gap-2.5 leading-none", className)}>
-      <Image
-        src="/logo.png"
-        alt={showWordmark ? "" : "Talha Zain — Applied AI Engineer"}
-        width={px}
-        height={px}
-        priority={size !== "sm"}
-        className="rounded-md object-cover"
+      <span
+        className="relative inline-flex shrink-0 overflow-hidden rounded-md"
         style={{ width: px, height: px }}
-      />
+      >
+        <Image
+          src="/logo2.png"
+          alt={showWordmark ? "" : "Talha Zain — Applied AI Engineer"}
+          width={px}
+          height={px}
+          priority={size !== "sm"}
+          className="h-full w-full scale-[1.7] object-cover"
+        />
+      </span>
       {showWordmark ? (
         <span className="flex flex-col">
           <span
