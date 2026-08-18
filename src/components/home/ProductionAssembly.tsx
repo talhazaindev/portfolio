@@ -60,7 +60,7 @@ export function ProductionAssembly() {
       id="assembly"
       tone="quiet"
       ghost="SHIP"
-      className={cn(scrub ? "h-[115vh]" : "py-16 sm:py-20")}
+      className={cn(scrub ? "h-[100vh]" : "py-16 sm:py-20")}
       aria-labelledby="assembly-heading"
     >
       {scrub ? (

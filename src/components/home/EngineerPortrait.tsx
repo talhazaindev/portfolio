@@ -2,14 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useSpring,
-  useTransform,
-} from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionEnvironment } from "@/components/ui/SectionEnvironment";
@@ -22,22 +15,13 @@ const PORTRAIT_SRC = "/images/talha-zain-portrait.webp";
 
 /**
  * Editorial brand portrait — warm cinematic dark environment.
- * Natural portrait warmth is the contrast; amber only on identity markers.
+ * Person beat: working style and curiosity, not another architecture lecture.
  */
 export function EngineerPortrait() {
   const reduce = useReducedMotion();
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  const rawY = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [18, -18]);
-  const y = useSpring(rawY, { stiffness: 80, damping: 28, mass: 0.4 });
 
   return (
     <SectionEnvironment
-      ref={sectionRef}
       id="engineer"
       tone="human"
       className="py-24 sm:py-28 lg:py-32"
@@ -45,17 +29,8 @@ export function EngineerPortrait() {
     >
       <Container width="wide">
         <div className="grid items-center gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16 xl:gap-20">
-          <motion.div
-            className="group relative mx-auto w-full max-w-lg lg:mx-0 lg:max-w-none"
-            initial={reduce ? false : { opacity: 0, y: 20, scale: 0.985 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, amount: 0.35 }}
-            transition={motionTiers.cinematic}
-          >
-            <motion.div
-              style={{ y: reduce ? 0 : y }}
-              className="relative aspect-[4/5] overflow-hidden sm:aspect-[5/6]"
-            >
+          <div className="group relative mx-auto w-full max-w-lg lg:mx-0 lg:max-w-none">
+            <div className="relative aspect-[4/5] overflow-hidden sm:aspect-[5/6]">
               <Image
                 src={PORTRAIT_SRC}
                 alt="Portrait of Talha Zain, Applied AI Engineer"
@@ -72,60 +47,35 @@ export function EngineerPortrait() {
                 aria-hidden
                 className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#090b11] via-transparent to-transparent opacity-60 lg:opacity-40"
               />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                style={{
-                  boxShadow: "inset -12px 0 28px -18px rgba(103,232,249,0.28)",
-                }}
-              />
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
           <div className="relative z-10 max-w-xl lg:pl-2">
-            <motion.div
-              className="mb-5 flex flex-wrap items-center gap-3"
-              initial={reduce ? false : { opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={motionTiers.interface}
-            >
+            <div className="mb-5 flex flex-wrap items-center gap-3">
               <MetaLabel keyword="SIGNAL" value="01" signal />
               <SignalLine compact />
-            </motion.div>
+            </div>
 
             <motion.h2
               id="engineer-heading"
               className="section-display text-balance text-heading"
-              initial={reduce ? false : { opacity: 0, y: 16 }}
+              initial={reduce ? false : { opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.5 }}
-              transition={{ ...motionTiers.cinematic, delay: reduce ? 0 : 0.06 }}
+              transition={motionTiers.section}
             >
               The engineer
               <br />
               behind the systems
             </motion.h2>
 
-            <motion.p
-              className="mt-6 max-w-md text-base leading-relaxed text-muted sm:text-lg"
-              initial={reduce ? false : { opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ ...motionTiers.interface, delay: reduce ? 0 : 0.1 }}
-            >
-              Models are only one component. I focus on orchestration, retrieval, state,
-              tools, evaluation, APIs, reliability and deployment — the layers that turn AI
-              capability into a production system.
-            </motion.p>
+            <p className="mt-6 max-w-md text-base leading-relaxed text-muted sm:text-lg">
+              I care about systems that stay reliable after the demo — clear ownership
+              boundaries, honest evaluation, and problems where retrieval, agents, and
+              infrastructure have to cooperate. Curious by default; deliberate in production.
+            </p>
 
-            <motion.dl
-              className="mt-10 grid gap-5 sm:grid-cols-2"
-              initial={reduce ? false : { opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ ...motionTiers.interface, delay: reduce ? 0 : 0.14 }}
-            >
+            <dl className="mt-10 grid gap-5 sm:grid-cols-2">
               <div>
                 <dt className="mono-label">Identity</dt>
                 <dd className="mt-1.5 text-sm text-foreground">
@@ -143,15 +93,9 @@ export function EngineerPortrait() {
                   Agentic systems · LLM · RAG · Production AI
                 </dd>
               </div>
-            </motion.dl>
+            </dl>
 
-            <motion.div
-              className="mt-10"
-              initial={reduce ? false : { opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ ...motionTiers.interface, delay: reduce ? 0 : 0.18 }}
-            >
+            <div className="mt-10">
               <Link
                 href="/about"
                 className="focus-ring inline-flex items-center gap-1.5 text-sm text-accent-secondary transition-colors hover:text-foreground"
@@ -159,7 +103,7 @@ export function EngineerPortrait() {
                 About Talha
                 <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
               </Link>
-            </motion.div>
+            </div>
           </div>
         </div>
       </Container>

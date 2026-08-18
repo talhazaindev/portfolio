@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useId, useMemo, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
 import { BrandSignature } from "@/components/brand/LogoMark";
 import { cn } from "@/lib/cn";
@@ -127,12 +127,26 @@ const edges: Array<[string, string]> = [
   ["api", "obs"],
 ];
 
+/** Lifecycle stages for the once-on-view execution story. */
+const STORY_STAGES: string[][] = [
+  ["user"],
+  ["orchestrator"],
+  ["agents", "rag", "tools"],
+  ["models", "memory"],
+  ["eval"],
+  ["api"],
+  ["obs"],
+];
+
 /** Conceptual interactive AI system graph — Neural Ivory architecture artifact. */
 export function HeroSystemGraph() {
   const reduce = useReducedMotion();
   const gradientId = useId();
+  const rootRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState<string>("orchestrator");
-  const [paused, setPaused] = useState(false);
+  const [storyDone, setStoryDone] = useState(false);
+  const [pulseKey, setPulseKey] = useState(0);
+  const [entered, setEntered] = useState(false);
 
   const related = useMemo(() => {
     const set = new Set<string>([active]);
@@ -145,29 +159,60 @@ export function HeroSystemGraph() {
 
   const activeNode = nodes.find((n) => n.id === active) ?? nodes[1];
   const activeIndex = nodes.findIndex((n) => n.id === active);
+  const storyComplete = Boolean(reduce) || storyDone;
 
-  const select = useCallback((id: string) => {
-    setActive(id);
-    setPaused(true);
+  const select = useCallback(
+    (id: string) => {
+      setActive(id);
+      if (storyComplete && !reduce) {
+        setPulseKey((k) => k + 1);
+      }
+    },
+    [storyComplete, reduce],
+  );
+
+  // Observe first viewport entry, then run lifecycle once
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setEntered(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.25 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
-  // Gentle idle tour — storytelling without noise
   useEffect(() => {
-    if (reduce || paused) return;
-    const id = window.setInterval(() => {
-      setActive((current) => {
-        const index = nodes.findIndex((n) => n.id === current);
-        return nodes[(index + 1) % nodes.length]?.id ?? "orchestrator";
-      });
-    }, 2800);
-    return () => window.clearInterval(id);
-  }, [reduce, paused]);
+    if (!entered || storyDone || reduce) return;
 
-  useEffect(() => {
-    if (!paused) return;
-    const id = window.setTimeout(() => setPaused(false), 9000);
-    return () => window.clearTimeout(id);
-  }, [paused, active]);
+    let stage = 0;
+    const id = window.setInterval(() => {
+      const stageNodes = STORY_STAGES[stage];
+      if (!stageNodes) {
+        window.clearInterval(id);
+        setActive("orchestrator");
+        setStoryDone(true);
+        return;
+      }
+      setActive(stageNodes[stageNodes.length - 1]!);
+      stage += 1;
+      if (stage >= STORY_STAGES.length) {
+        window.clearInterval(id);
+        window.setTimeout(() => {
+          setActive("orchestrator");
+          setStoryDone(true);
+        }, 150);
+      }
+    }, 150);
+
+    return () => window.clearInterval(id);
+  }, [entered, reduce, storyDone]);
 
   function onKeyNav(event: React.KeyboardEvent, id: string) {
     if (event.key === "Enter" || event.key === " ") {
@@ -187,11 +232,12 @@ export function HeroSystemGraph() {
     }
   }
 
+  const showPulse = storyComplete && !reduce && pulseKey > 0;
+
   return (
     <div
-      className="relative flex h-full min-h-[32rem] flex-col overflow-hidden rounded-[var(--radius-lg)] border border-[#D3D8DE] bg-canvas-soft shadow-[var(--shadow-graph)] sm:min-h-[36rem] lg:min-h-full"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
+      ref={rootRef}
+      className="relative flex h-full min-h-0 flex-col overflow-hidden rounded-[var(--radius-lg)] border border-[#D3D8DE] bg-canvas-soft shadow-[var(--shadow-graph)]"
     >
       <div className="flex items-center justify-between gap-3 border-b border-[#D3D8DE]/80 px-4 py-3 sm:px-5">
         <div className="flex items-center gap-2.5">
@@ -208,13 +254,17 @@ export function HeroSystemGraph() {
             {String(activeIndex + 1).padStart(2, "0")} / {String(nodes.length).padStart(2, "0")}
           </span>
           <span className="inline-flex items-center gap-1.5 rounded-md border border-system-cyan/35 bg-white px-2 py-1 font-mono text-[10px] uppercase tracking-wider text-system-cyan">
-            <span className="h-1.5 w-1.5 rounded-full bg-system-cyan motion-safe:animate-pulse" />
-            Live
+            <span
+              className={cn(
+                "h-1.5 w-1.5 rounded-full bg-system-cyan",
+                !storyComplete && !reduce && "motion-safe:animate-pulse",
+              )}
+            />
+            {storyComplete ? "Ready" : "Boot"}
           </span>
         </div>
       </div>
 
-      {/* Mobile: compressed flow rail */}
       <div className="grid gap-2 p-3 md:hidden" role="list" aria-label="Production AI system stages">
         {nodes.map((node) => (
           <button
@@ -237,7 +287,6 @@ export function HeroSystemGraph() {
         ))}
       </div>
 
-      {/* Desktop topology */}
       <div className="relative hidden flex-1 bg-canvas-soft md:block">
         <svg
           viewBox="0 0 100 100"
@@ -270,8 +319,9 @@ export function HeroSystemGraph() {
                   strokeWidth={lit ? 0.55 : 0.28}
                   className="transition-[stroke-width] duration-300"
                 />
-                {lit && !reduce ? (
+                {lit && showPulse ? (
                   <line
+                    key={`pulse-${pulseKey}-${from}-${to}`}
                     x1={a.x}
                     y1={a.y}
                     x2={b.x}
@@ -279,7 +329,7 @@ export function HeroSystemGraph() {
                     stroke="var(--system-cyan)"
                     strokeWidth="0.35"
                     strokeDasharray="1.2 2.4"
-                    className="tz-flow-dash"
+                    className="tz-flow-dash-once"
                     opacity="0.9"
                   />
                 ) : null}
@@ -381,7 +431,6 @@ export function HeroSystemGraph() {
         </svg>
       </div>
 
-      {/* Inspector strip — technical storytelling */}
       <div className="mt-auto border-t border-[#D3D8DE]/80 bg-white/70 px-4 py-3.5 sm:px-5">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <span className="text-sm font-medium tracking-tight text-ink">

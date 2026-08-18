@@ -884,9 +884,9 @@ export const productionSignals = [
     projectSlug: "ai-compare-hub",
   },
   {
-    value: "5+",
-    label: "Audio Models",
-    projectSlug: "ai-compare-hub",
+    value: "HITL",
+    label: "Human Approval Gates",
+    projectSlug: "medicai",
   },
   {
     value: "290+",

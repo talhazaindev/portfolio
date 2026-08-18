@@ -352,9 +352,9 @@ body {
 }
 
 .hero-display {
-  font-size: clamp(2.15rem, 4.8vw, 3.75rem);
-  line-height: 1.08;
-  letter-spacing: -0.034em;
+  font-size: clamp(1.75rem, 3.4vw, 2.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.032em;
   font-weight: 550;
   text-wrap: pretty;
   color: var(--ink-strong);
@@ -387,8 +387,16 @@ body {
   animation: tz-flow 1.1s linear infinite;
 }
 
+.tz-flow-dash-once {
+  animation: tz-flow 0.9s linear 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tz-flow-dash {
+    animation: none;
+  }
+
+  .tz-flow-dash-once {
     animation: none;
   }
 }

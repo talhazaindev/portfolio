@@ -3,7 +3,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
-import { getCaseStudyProjects } from "@/data/projects";
+import { getCaseStudyProjects, getFeaturedProjects } from "@/data/projects";
+import { capabilities } from "@/data/capabilities";
+import { experience } from "@/data/experience";
 import { siteConfig } from "@/data/site";
 import { social } from "@/data/social";
 import { AnalyticsEvents, track } from "@/lib/analytics";
@@ -30,8 +32,41 @@ export function CommandPalette() {
       id: project.slug,
       label: project.name,
       hint: "Case study",
-      keywords: `${project.categories.join(" ")} ${project.domains.join(" ")}`,
+      keywords: `${project.categories.join(" ")} ${project.domains.join(" ")} ${project.technologies.join(" ")}`,
       run: () => router.push(`/work/${project.slug}`),
+    }));
+
+    const techCommands = Array.from(
+      new Set(getFeaturedProjects().flatMap((project) => project.technologies)),
+    )
+      .slice(0, 24)
+      .map((tech) => {
+        const match = getFeaturedProjects().find((project) =>
+          project.technologies.includes(tech),
+        );
+        return {
+          id: `tech-${tech}`,
+          label: tech,
+          hint: match ? match.name : "Technology",
+          keywords: `technology stack ${tech}`,
+          run: () => router.push(match ? `/work/${match.slug}` : "/work"),
+        };
+      });
+
+    const capabilityCommands = capabilities.map((domain) => ({
+      id: `cap-${domain.id}`,
+      label: domain.title,
+      hint: "Capability",
+      keywords: `${domain.description} ${domain.items.join(" ")}`,
+      run: () => router.push("/#capabilities"),
+    }));
+
+    const experienceCommands = experience.map((role) => ({
+      id: `exp-${role.company}`,
+      label: `${role.role} · ${role.company}`,
+      hint: "Experience",
+      keywords: `${role.themes.join(" ")} ${role.impact}`,
+      run: () => router.push("/experience"),
     }));
 
     return [
@@ -44,23 +79,18 @@ export function CommandPalette() {
       },
       ...projectCommands,
       {
-        id: "architecture",
-        label: "View Architecture",
+        id: "capabilities",
+        label: "Capabilities",
         hint: "Navigate",
-        keywords: "capability graph systems",
+        keywords: "capability graph architecture systems agentic rag",
         run: () => router.push("/#capabilities"),
       },
       {
         id: "experience",
         label: "Experience",
         hint: "Navigate",
+        keywords: "trajectory career",
         run: () => router.push("/experience"),
-      },
-      {
-        id: "capabilities",
-        label: "Capabilities",
-        hint: "Navigate",
-        run: () => router.push("/#capabilities"),
       },
       {
         id: "about",
@@ -68,6 +98,16 @@ export function CommandPalette() {
         hint: "Navigate",
         run: () => router.push("/about"),
       },
+      {
+        id: "contact-page",
+        label: "Contact",
+        hint: "Navigate",
+        keywords: "talk hire collaborate",
+        run: () => router.push("/contact"),
+      },
+      ...capabilityCommands,
+      ...experienceCommands,
+      ...techCommands,
       {
         id: "contact",
         label: "Email Talha",
@@ -105,6 +145,7 @@ export function CommandPalette() {
               id: "resume",
               label: "Download Résumé",
               hint: "PDF",
+              keywords: "cv resume",
               run: () => {
                 track(AnalyticsEvents.resumeClick, { source: "command_palette" });
                 window.open(social.resumePath!, "_blank", "noopener,noreferrer");
@@ -202,7 +243,7 @@ export function CommandPalette() {
                 if (filtered[active].id !== "system-status") setOpen(false);
               }
             }}
-            placeholder="Jump to systems, about, GitHub…"
+            placeholder="Search systems, capabilities, stack, experience…"
             className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted"
             aria-label="Command search"
           />

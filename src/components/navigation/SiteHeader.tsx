@@ -79,7 +79,7 @@ export function SiteHeader() {
   return (
     <>
       <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
-        <div className="pointer-events-auto mx-auto max-w-[1220px] px-3 sm:px-4 lg:px-5">
+        <div className="pointer-events-auto w-full px-3 sm:px-4 lg:px-6 xl:px-8">
           <div
             className={cn(
               "relative overflow-hidden rounded-[16px]",
@@ -129,7 +129,7 @@ export function SiteHeader() {
               >
                 <BrandSignature size="md" />
                 <span className="truncate text-[13px] font-semibold tracking-tight text-ink-strong sm:text-sm">
-                    Building Production Intelligence
+                  Applied AI Engineer
                 </span>
               </Link>
 
@@ -307,7 +307,7 @@ export function SiteHeader() {
                 >
                   <BrandSignature size="md" />
                   <span className="text-[13px] font-semibold tracking-tight text-ink-strong">
-                    Beyond the Model
+                    Applied AI Engineer
                   </span>
                 </Link>
                 <button
