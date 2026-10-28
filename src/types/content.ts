@@ -14,6 +14,10 @@ export type ProjectDomain =
   | "Advertising"
   | "Creative AI"
   | "Retail"
+  | "Enterprise"
+  | "Knowledge"
+  | "Sports"
+  | "Fintech"
   | "Other";
 
 export type ProjectStatus = "production" | "internal" | "prototype";

@@ -89,7 +89,7 @@ Notes from Vercel verify at add-time:
 
 ## Content & links
 
-- [ ] Résumé accessible: `/Talha_Zain_Applied_AI_Engineer_CV.pdf`
+- [ ] Résumé accessible: `/Talha_Zain_Senior_AI_Resume.pdf`
 - [ ] GitHub links working
 - [ ] LinkedIn working
 - [ ] Live project links working (AI Compare Hub, MediaX)

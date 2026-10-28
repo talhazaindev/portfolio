@@ -9,6 +9,12 @@ Do **not** invent GitHub repository URLs.
 | MedicAI | ❌ needs URL | ✅ `https://github.com/talhazaindev/MedicAI` |
 | MediaX | ✅ `https://map.mediaxnetwork.com/` | ❌ needs URL |
 | ECG Intelligence Platform | ❌ needs URL | ✅ `https://github.com/talhazaindev/ECG-Data-Unification` |
+| Noxus | ✅ `https://www.noxus.ai/` | ❌ needs URL |
+| MythOS | ✅ `https://mythos.one/` | ❌ needs URL |
+| MyPop | ✅ `https://mypop.ai/` | ❌ needs URL |
+| Uplift | ✅ `https://www.uplift.ai/` | ❌ needs URL |
+| Verifast | ✅ `https://www.verifast.com/` | ❌ needs URL |
+| MateFi | ✅ `https://matefi.ai/` | ❌ needs URL |
 
 Personal GitHub profile: ✅ `https://github.com/talhazaindev`
 

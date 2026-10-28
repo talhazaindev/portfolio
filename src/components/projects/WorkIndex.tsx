@@ -25,6 +25,10 @@ const domainFilters: Array<"ALL" | ProjectDomain> = [
   "Advertising",
   "Creative AI",
   "Retail",
+  "Enterprise",
+  "Knowledge",
+  "Sports",
+  "Fintech",
   "Other",
 ];
 

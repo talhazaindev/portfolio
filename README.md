@@ -106,7 +106,7 @@ Content lives in data modules (edit these, not page shells):
 
 Types: `src/types/content.ts`
 
-Résumé: `public/Talha_Zain_Applied_AI_Engineer_CV.pdf`
+Résumé: `public/Talha_Zain_Senior_AI_Resume.pdf`
 
 ---
 
@@ -191,7 +191,7 @@ caseStudy: true  // generates /work/[slug]
 | Projects | `src/data/projects.ts` |
 | Experience | `src/data/experience.ts` |
 | Capabilities | `src/data/capabilities.ts` |
-| Résumé PDF | replace `public/Talha_Zain_Applied_AI_Engineer_CV.pdf` |
+| Résumé PDF | replace `public/Talha_Zain_Senior_AI_Resume.pdf` |
 
 After content updates: commit → push `main` → Vercel redeploys automatically.
 
@@ -205,6 +205,12 @@ After content updates: commit → push `main` → Vercel redeploys automatically
 - MediaX: https://map.mediaxnetwork.com/
 - MedicAI: https://github.com/talhazaindev/MedicAI
 - ECG Intelligence: https://github.com/talhazaindev/ECG-Data-Unification
+- Noxus: https://www.noxus.ai/
+- MythOS: https://mythos.one/
+- MyPop: https://mypop.ai/
+- Uplift: https://www.uplift.ai/
+- Verifast: https://www.verifast.com/
+- MateFi: https://matefi.ai/
 
 ---
 

@@ -22,6 +22,18 @@ const PROJECT_AMBIENT: Record<string, string> = {
     "radial-gradient(circle at 40% 55%, rgba(45,108,223,0.05), transparent 44%)",
   "ecg-intelligence":
     "radial-gradient(circle at 55% 40%, rgba(23,63,95,0.05), transparent 40%)",
+  noxus:
+    "radial-gradient(circle at 28% 42%, rgba(45,108,223,0.07), transparent 42%)",
+  mythos:
+    "radial-gradient(circle at 68% 48%, rgba(28,181,176,0.06), transparent 44%)",
+  mypop:
+    "radial-gradient(circle at 36% 52%, rgba(45,108,223,0.05), transparent 40%)",
+  uplift:
+    "radial-gradient(circle at 62% 38%, rgba(242,166,90,0.06), transparent 42%)",
+  verifast:
+    "radial-gradient(circle at 44% 58%, rgba(28,181,176,0.07), transparent 40%)",
+  matefi:
+    "radial-gradient(circle at 58% 44%, rgba(45,108,223,0.06), transparent 42%)",
 };
 
 /** Homepage featured systems — soft ivory environment + editorial hierarchy. */
@@ -33,8 +45,8 @@ export function SelectedSystems() {
     <Section
       id="work"
       eyebrow="Selected systems"
-      title="Production systems across generative AI, healthcare, retrieval and data infrastructure."
-      description="Flagship case studies. Additional systems live in the Engineering Archive."
+      title="Production systems across agentic AI, RAG, healthcare, fintech and enterprise ops."
+      description="Flagship case studies spanning orchestration, retrieval, and ML pipelines. More systems live in the Engineering Archive."
       tone="system"
       ghost="SYSTEMS"
       containerWidth="extra-wide"
